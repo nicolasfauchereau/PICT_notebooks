@@ -6,14 +6,8 @@ import bottleneck  as bn
 from matplotlib.mlab import detrend_linear
 from scipy.stats import ttest_ind
 from ..utils import seasons_params
+import xarray as xray
 
-try:
-    import xarray as xray
-except:
-    try:
-        import xray
-    except ImportError:
-        print('cannot import xarray or xray')
 
 class analogs:
     """
@@ -87,7 +81,7 @@ class analogs:
         # get the name of the file to open
         fname = self.dset_dict['path']
 
-        # `dset` is now an attribute of the ensemble object
+        # `dset` is now an attribute of the composite object
         self.dset = xray.open_dataset(fname)
 
         # get the variable and its index
@@ -105,6 +99,7 @@ class analogs:
 
         # get rid of the first nans in the time-series / fields after move_mean or move_sum
         seas_field = seas_field[(self.seasons_params[self.season][0]-1)::,:,:]
+
         index = index[(self.seasons_params[self.season][0]-1)::]
 
         # now selects the SEASON of interest
@@ -134,10 +129,10 @@ class analogs:
             self.dset['dates'] = (('dates',), dates)
             self.dset['seas_var'] = (('dates', 'latitudes', 'longitudes'), dseas_field)
 
-        # if detrend is False, then just add the seaosnal values
+        # if detrend is False, then just add the seasonal values
         else:
             self.dset['dates'] = (('dates',), dates)
-            self.dset['seas_var'] = (('dates', 'latitudes', 'longitudes'), seas_field)
+            self.dset['seas_var'] = (('years', 'latitudes', 'longitudes'), seas_field)
 
     def composite(self, climatology=(1981, 2010),  test=True, repeats=True, weighting=False):
         """
@@ -197,32 +192,32 @@ class analogs:
             compos_a = (compos_a * weights_arr) / weights_arr.sum('dates')
 
         # get the composite anomalies into a DataArray
-        compos_a_x = xray.DataArray(ma.masked_array(compos_a, np.isnan(compos_a)), dims=('years','latitudes','longitudes'),
-                              coords={'years':ayears, 'latitudes':self.dset.latitudes, 'longitudes':self.dset.longitudes})
+        # compos_a_x = xray.DataArray(ma.masked_array(compos_a.data, np.isnan(compos_a.data)), dims=('years','latitudes','longitudes'),
+        #                       coords={'years':ayears, 'latitudes':self.dset.latitudes, 'longitudes':self.dset.longitudes})
         # if test is True, then the standard Student t-test is calculated
         if test:
             t, pvalues = ttest_ind(compos_s.data, clim.data, axis=0)
             # pvalues contains the p-values, we can delete the Test statistics
             del(t)
 
-        # we drop the time and dates dimensions, which has
-        # for effect to drop all the variables that depend on them
-        self.dset = self.dset.drop(('dates','time'))
 
         # store the anomalies and the composite anomalies
         # in the xray Dataset
 
-        self.dset['years'] = (('years',), ayears)
+        # saves the pvalues
+        self.dset['pvalues'] = (('latitudes','longitudes'), pvalues)
 
-        self.dset['composite_sample'] = compos_a_x
+        self.dset['years'] = (('years',), self.analog_years)
 
-        self.dset['composite_anomalies'] = compos_a_x.mean('years')
+        self.dset['composite_sample'] = (('years','latitudes','longitudes'), compos_s.data)
 
-        self.dset['weights'] = xray.DataArray(np.array(self.parent.weights), dims=('years'), coords={'years':compos_a_x.years.data})
+        self.dset['composite_anomalies'] = (('latitudes','longitudes'), compos_a.mean('dates').data)
 
-        # saves the p-values
-        self.dset['pvalues'] = \
-        (('latitudes', 'longitudes'), pvalues)
+        self.dset['weights'] = xray.DataArray(np.array(self.parent.weights), dims=('years'), coords={'years':self.dset.years.data})
+
+        # eliminate the variables not needed
+
+        self.dset = self.dset[[self.variable, 'seas_var', 'composite_sample', 'composite_anomalies', 'pvalues']]
 
         # set the attributes
         self.dset['latitudes'].attrs['units'] = 'degrees_north'
