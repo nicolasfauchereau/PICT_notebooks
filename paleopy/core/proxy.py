@@ -6,15 +6,7 @@ from numpy import ma
 import pandas as pd
 import matplotlib.pyplot as plt
 import json
-
-try:
-    import xarray as xray
-except:
-    try:
-        import xray
-    except ImportError:
-        print('cannot import xarray or xray')
-
+import xarray as xr
 from scipy.stats import linregress
 
 # relative imports
@@ -245,7 +237,7 @@ class proxy:
         point = self.coords
         start = str(self.period[0])
         end = str(self.period[1])
-        dset = xray.open_dataset(fname)
+        dset = xr.open_dataset(fname)
         dset = dset.sel(time=slice(start, end))
         # test is a mask is present, if so assume we have a grid
         # then meshgrid, mask, flatten, etc
@@ -272,7 +264,7 @@ class proxy:
             latf = lats.flatten('F')
             ### TODO:
             ### test, then replace do_kdtree with the call to the sel
-            ### method of a xray.Dataset with method = 'nearest'
+            ### method of a xr.Dataset with method = 'nearest'
             self.extracted_coords = do_kdtree(lonf, latf, point)
             self.distance_point = haversine(self.extracted_coords, point)
             ts = dset[self.variable].sel(longitudes=self.extracted_coords[0], latitudes=self.extracted_coords[1])

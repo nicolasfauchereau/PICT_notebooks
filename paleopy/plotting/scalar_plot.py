@@ -1,9 +1,12 @@
 import numpy as np
 from numpy import ma
 from matplotlib import pyplot as plt
-from mpl_toolkits.basemap import Basemap as bm
-from mpl_toolkits.basemap import addcyclic
+import xarray as xr
+from cartopy import crs as ccrs
+from cartopy.util import add_cyclic_point
+from cartopy.mpl.ticker import LongitudeFormatter, LatitudeFormatter
 import palettable
+import cmocean
 
 class scalar_plot:
     """
@@ -11,7 +14,7 @@ class scalar_plot:
     methods to plot a scalar plot on a map
     """
     def __init__(self, analogs, center=None, robust=True, robust_percentile=1.0, \
-              vmin=None, vmax=None, cmap=None, grid=True, domain=None, proj=None, res='c', test=None, border=True, proxies_loc=False):
+              vmin=None, vmax=None, cmap=None, grid=True, domain=None, proj=None, res='c', test=0.05, border=True, proxies_loc=False):
 
         self.analogs = analogs
         self.domain = domain
@@ -29,32 +32,30 @@ class scalar_plot:
         self.border = border
         self.proxies_loc = proxies_loc
 
-    def _get_domain(self, domain):
+    def _get_domain(self):
 
-        domain_dset = self.analogs.dset_dict['domain']
+        if self.domain is not None:
+            domain_dset = self.analogs.dset_dict['domain']
+            if ( (self.domain[0] < domain_dset[0]) | (self.domain[1] > domain_dset[1])  \
+                | (self.domain[2] < domain_dset[2]) | (self.domain[3] > domain_dset[3]) ):
+                print("""ERROR! the domain for the analog site is partly outside the limits of the dataset""")
+                raise Exception("DOMAIN ERROR")
 
-        if ( (self.domain[0] < domain_dset[0]) | (self.domain[1] > domain_dset[1])  \
-            | (self.domain[2] < domain_dset[2]) | (self.domain[3] > domain_dset[3]) ):
-            print("""ERROR! the domain for the analogsite is partly outside the limits of the dataset""")
-            raise Exception("DOMAIN ERROR")
-
-        else:
-            # checks whether the first latitude is the northermost or southermost latitude
-            latstart = self.analogs.dset['latitudes'].data[0]
-            latend  = self.analogs.dset['latitudes'].data[-1]
-            # if first latitude northermost, reverse the order of the domain selection
-            if latstart > latend:
-                dset_domain = self.analogs.dset.sel(latitudes=slice(self.domain[3], self.domain[2]), \
-                                                   longitudes=slice(self.domain[0], self.domain[1]))
-            # if not, go ahead with the domain limits as they are provided
             else:
-                dset_domain = self.analogs.dset.sel(latitudes=slice(self.domain[2], self.domain[3]), \
+                # checks whether the first latitude is the northermost or southermost latitude
+                latstart = self.analogs.dset['latitudes'].data[0]
+                latend  = self.analogs.dset['latitudes'].data[-1]
+                # if first latitude northermost, reverse the order of the domain selection
+                if latstart > latend:
+                    dset_domain = self.analogs.dset.sortby('latitudes')
+                # if not, go ahead with the domain limits as they are provided
+                else:
+                    dset_domain = self.analogs.dset.sel(latitudes=slice(self.domain[2], self.domain[3]), \
                                                    longitudes=slice(self.domain[0], self.domain[1]))
-
             self.dset_domain = dset_domain
-
+        else:
+            self.dset_domain = self.analogs.dset
         return self
-
 
     def _get_plots_params(self, data):
         """
@@ -70,8 +71,8 @@ class scalar_plot:
         # ravel and removes nans for calculation of intervals etc
         calc_data = np.ravel(data[np.isfinite(data)])
 
-        # the following is borrowed from xray
-        # see: plot.py in xray/xray/plot
+        # the following is borrowed from xr
+        # see: plot.py in xr/xr/plot
         if self.vmin is None:
             self.vmin = np.percentile(calc_data, self.robust_percentile) if self.robust else calc_data.min()
         if self.vmax is None:
@@ -106,260 +107,162 @@ class scalar_plot:
 
         return self
 
-    def _get_basemap(self):
-        """
-        given the projection and the domain, returns
-        the dataset as well as the Basemap instance
-        """
-
-        if self.domain:
-            self._get_domain(self.domain)
-        else:
-            self.dset_domain = self.analogs.dset
-
-        # get the lat and lons
-        latitudes = self.dset_domain['latitudes'].data
-        longitudes = self.dset_domain['longitudes'].data
-
-        if not(self.proj):
-            self.proj = 'cyl'
-
-        if self.proj in ['cyl', 'merc']:
+    def _get_ccrs(self):
             """
-            NOTE: using a Mercator projection won't work if either / both
-            the northermost / southermost latitudes are 90 / -90
-
-            if one wants (but why would you do that ?) to plot a global
-            domain in merc, one needs to pass:
-
-            domain = [0., 360., -89.9, 89.9]
-
-            to the `scalar_plot` class
-
-            Any sub-domain of a global domain will work fine
+            given the projection and the domain, returns
+            the cartopy projection of the map (the data projection, i.e.
+            the 'transform' argument, is always assumed to be
+            ccrs.PlateCarree(central_longitude=0))
             """
-            self.m = bm(projection=self.proj,llcrnrlat=latitudes.min(),urcrnrlat=latitudes.max(),\
-                llcrnrlon=longitudes.min(),urcrnrlon=longitudes.max(),\
-                lat_ts=0, resolution=self.res)
 
-        if self.proj == 'moll':
-            self.m = bm(projection='moll',lon_0=180, resolution=self.res)
+            if not(self.proj):
+                self.proj = 'cyl'
+                self.crs = ccrs.PlateCarree(central_longitude=0)
 
-        if self.proj in ['npstere','spstere']:
-            self.m = bm(projection=self.proj,boundinglat=0,lon_0=0, resolution=self.res, round=True)
+            if self.proj in ['cyl', 'merc']:
+                """
+                NOTE: using a Mercator projection won't work if either / both
+                the northermost / southermost latitudes are 90 / -90
 
-        return self
+                if one wants (but why would you do that ?) to plot a global
+                domain in merc, one needs to pass:
 
-    def _meshgrid(self, data_array):
+                domain = [0., 360., -89.9, 89.9]
+
+                to the `scalar_plot` class
+
+                Any sub-domain of a global domain will work fine
+                """
+                self.crs = ccrs.PlateCarree(central_longitude=180)
+
+            if self.proj == 'moll':
+                self.crs = ccrs.Mollweide(central_longitude=180)
+
+            if self.proj == 'spstere':
+                self.crs = ccrs.SouthPolarStereo(central_longitude=180)
+
+            if self.proj == 'npstere':
+                self.crs = ccrs.NorthPolarStereo(central_longitude=180)
+
+            return self
+
+    def _wrap_longitudes(self, data_array):
+
+        lat = data_array.coords['latitudes']
+        lon = data_array.coords['longitudes']
+
+        data = data_array.data
+
+        wrap_data, wrap_lon = add_cyclic_point(data, coord=lon)
+
+        data_array = xr.DataArray(wrap_data, dims=('latitudes','longitudes'), coords=[lat, wrap_lon])
+
+        return data_array
+
+    def plot(self, subplots=False, domain=None, wrap_longitudes=False, res='low'):
         """
-        given some data, returns the np.meshgrid associated
-        lons and lats + addcyclic longitude if proj is 'spstere'
-        or 'npstere'
-        """
-
-        latitudes = self.dset_domain['latitudes'].data
-        longitudes = self.dset_domain['longitudes'].data
-
-        if self.proj in ['npstere','spstere','moll']:
-            """
-            if north polar or south polar stereographic projection
-            we take care of the discontinuity at Greenwich using the
-            `addcyclic` function of basemap
-            """
-            data_array, lon = addcyclic(data_array, longitudes)
-            lons, lats = np.meshgrid(lon, latitudes)
-        else:
-            lons, lats = np.meshgrid(longitudes, latitudes)
-
-        return lons, lats, data_array
-
-
-    def plot(self, subplots=False):
-        """
-        basemap plot of a scalar quantity
+        cartopy plot of a scalar quantity
         """
 
-        # get the basemap instance
+        if not hasattr(self, 'crs'):
+            self._get_ccrs()
 
-        self._get_basemap()
+        if not hasattr(self, 'dset_domain'):
+            self._get_domain()
 
-        # ===============================================================
-        # plots
+        mat = self.dset_domain['composite_anomalies']
+        pvalues = self.dset_domain['pvalues']
 
-        if subplots:
+        # get the plot params from the composite anomalies data
+        self._get_plots_params(mat.data)
 
-            """
-            if subplots == True, we create one map for each year
-            in the composite sample
-            """
+        cmap = eval(self.analogs.dset_dict['plot']['cmap'])
+        units = self.analogs.dset_dict['units']
 
-            mat = self.dset_domain['composite_sample'].data
+        # if the domain is global, we wrap the longitudes
+        if wrap_longitudes:
+            mat = _wrap_longitudes(mat)
+            pvalues = _wrap_longitudes(pvalues)
 
-            # get the plot params from the composite sample data
-            self._get_plots_params(mat)
+        r, c = mat.shape
 
-            # if the number of years is odd, add 1 to the subplots
-            if (mat.shape[0] % 2) > 0:
-                nsubplots = mat.shape[0] + 1
-            else:
-                nsubplots = mat.shape[0]
+        f, ax = plt.subplots(figsize=(5*(c/r), 5), dpi=200, subplot_kw={'projection':self.crs})
 
-            """
-            creates the figure
-            """
+        mat.plot.contourf(ax=ax, levels=20, cmap=cmap, transform=ccrs.PlateCarree(), \
+            cbar_kwargs={'shrink':0.7, 'label':units})
 
-            r, c = mat.shape[1:]
+        # if test is defined, one contours the p-values for that level
+        if self.test:
+            pvalues.plot.contour(levels = [self.test], colors='#8C001A', linewidths=1.5, transform=ccrs.PlateCarree())
 
-            f, axes = plt.subplots(nrows=nsubplots // 2, ncols=2, figsize=(10*(c/r), 12))
+        # draw the coastlines, if the domain is global we use the 50 minutes resolution coastlines
+        # dataset, and if not (res = 'high') we use the 10 minutes resolution (slower)
 
-            axes = axes.flatten('F')
+        # we also adjust the gridlines according to the resolution
+        if res in ['low','l']:
+            ax.coastlines(resolution='50m')
 
-            for i in range(mat.shape[0]):
+            xticks = np.arange(0, 400., 40)
 
-                ax = axes[i]
+            yticks = np.arange(-80., 100., 20.)
 
-                matp = mat[i,:,:]
+            gl = ax.gridlines(draw_labels=False, linewidth=0.5, linestyle='--', xlocs=xticks, ylocs=yticks, crs=ccrs.PlateCarree())
 
-                lons, lats, matp = self._meshgrid(matp)
+            ax.set_xticks(xticks, crs=ccrs.PlateCarree())
 
-                self.m.ax = ax
+            ax.set_yticks(yticks, crs=ccrs.PlateCarree())
 
-                # pcolormesh
-                im = self.m.pcolormesh(lons, lats, ma.masked_invalid(matp), \
-                                  vmin=self.vmin, vmax=self.vmax, cmap=self.cmap, latlon=True)
+            lon_formatter = LongitudeFormatter(zero_direction_label=True, dateline_direction_label=True)
 
-                # sets the colorbar
-                cb = self.m.colorbar(im)
-                [l.set_fontsize(10) for l in cb.ax.yaxis.get_ticklabels()]
-                cb.set_label(self.analogs.dset_dict['units'],fontsize=10)
+            lat_formatter = LatitudeFormatter()
 
-                # draw the coastlines
-                self.m.drawcoastlines()
+            ax.xaxis.set_major_formatter(lon_formatter)
 
-                # if one is plotting SST data, fill the continents
-                if self.analogs.variable in ['sst','SST']:
-                    self.m.fillcontinents('0.8', lake_color='0.8')
-                if self.analogs.dataset in ['VCSN', 'vcsn']:
-                    self.m.drawmapboundary(fill_color='steelblue')
-
-                # if grid, plots the lat  / lon lines on the map
-                if self.grid:
-                    # if it's hires ('f' or 'h'), every 10 degrees
-                    if self.res in ['h','f']:
-                        self.m.drawmeridians(np.arange(0, 360, 5), labels=[0,0,0,1], fontsize=10)
-                        self.m.drawparallels(np.arange(-80, 80+5, 5), labels=[1,0,0,0], fontsize=10)
-                    # if not hires, plots lines every 40 degrees
-                    else:
-                        self.m.drawmeridians(np.arange(0, 360, 60), labels=[0,0,0,1], fontsize=10)
-                        self.m.drawparallels(np.arange(-80, 80+10, 40), labels=[1,0,0,0], fontsize=10)
-
-                if not(self.border):
-                    ax.axis('off')
-
-                # set the title from the description in the dataset + variable JSON entry
-                ax.set_title("{}: {} {}".format(self.analogs.dset_dict['short_description'],\
-                self.analogs.season, self.analogs.analog_years[i]), \
-                fontsize=10)
-
-                # proxies_loc is True, we plot the proxies locations on the map
-                if self.proxies_loc:
-                    locs = self.analogs.locations
-                    for k in locs.keys():
-                        lon, lat = locs[k]
-                        if (lon > 180):
-                            lon -= 360.
-                        self.m.plot(lon, lat, marker='D', color='m', markersize=8, latlon=True)
-
-            # if not even number of years, we delete the last
-            # (empty) subplpot that was created
-            if (mat.shape[0] % 2) > 0:
-                f.delaxes(axes[-1])
-
-            return f
-
-            plt.close(f)
-
+            ax.yaxis.set_major_formatter(lat_formatter)
 
         else:
+            ax.coastlines(resolution='10m')
 
-            """
-            if subplot == False,
-            the data is the composite anomalies, and we add the pvalues
-            for free
-            """
+            xticks = np.arange(0, 400., 5)
 
-            mat = self.dset_domain['composite_anomalies'].data
+            yticks = np.arange(-80., 100., 5.)
 
-            # get the plot params from the composite anomalies data
-            self._get_plots_params(mat)
+            gl = ax.gridlines(draw_labels=False, linewidth=0.5, linestyle='--', xlocs=xticks, ylocs=yticks, crs=ccrs.PlateCarree())
 
-            pvalues = self.dset_domain['pvalues'].data
+            ax.set_xticks(xticks, crs=ccrs.PlateCarree())
 
-            lons, lats, mat = self._meshgrid(mat)
-            lons, lats, pvalues = self._meshgrid(pvalues)
+            ax.set_yticks(yticks, crs=ccrs.PlateCarree())
 
-            r, c = mat.shape
+            lon_formatter = LongitudeFormatter(zero_direction_label=True, dateline_direction_label=True)
 
-            f, ax = plt.subplots(figsize=(8*(c/r), 8), dpi=200)
+            lat_formatter = LatitudeFormatter()
 
-            # the basemap instance gets attached to the created axes
-            self.m.ax = ax
+            ax.xaxis.set_major_formatter(lon_formatter)
 
-            # pcolormesh
-            im = self.m.pcolormesh(lons, lats, ma.masked_invalid(mat), \
-                              vmin=self.vmin, vmax=self.vmax, cmap=self.cmap, latlon=True)
+            ax.yaxis.set_major_formatter(lat_formatter)
 
-            # if test is defined, one contours the p-values for that level
-            if self.test:
-                #P = ma.where(self.dset['pvalues'].data <0.1 , 1, np.nan)
-                #m.contourf(lon, lat, P, colors='0.99', \
-                #           hatches=['...'], latlon=True, zorder=2, alpha=0.2)
-                self.m.contour(lons, lats, pvalues, [self.test], latlon=True, \
-                          colors='#8C001A', linewidths=1.5)
+        gl.xlabels_top = False
+        gl.ylabels_right = False
 
-            # sets the colorbar
-            cb = self.m.colorbar(im)
-            [l.set_fontsize(14) for l in cb.ax.yaxis.get_ticklabels()]
-            cb.set_label(self.analogs.dset_dict['units'],fontsize=14)
+        ax.set_ylabel('latitudes (degrees north)')
+        ax.set_xlabel('longitudes (degrees east)')
 
-            # draw the coastlines
-            self.m.drawcoastlines()
+        # set the title from the description in the dataset + variable JSON entry
+        ax.set_title(self.analogs.dset_dict['description'], fontsize=14)
 
-            # if one is plotting SST data, fill the continents
-            if self.analogs.variable in ['sst','SST']:
-                self.m.fillcontinents('0.8', lake_color='0.8')
-            # if self.analogs.dataset in ['VCSN', 'vcsn']:
-            #     self.m.drawmapboundary(fill_color='steelblue')
+        if self.domain is not None:
+            ax.set_extent(self.domain, crs=ccrs.PlateCarree(central_longitude=0))
 
+        # proxies_loc is True, we plot the proxies locations on the map
+        if self.proxies_loc:
+            locs = self.analogs.locations
+            for k in locs.keys():
+                lon, lat = locs[k]
+                ax.plot(lon, lat, marker='o', color='w', markersize=7, transform=ccrs.PlateCarree())
+                ax.plot(lon, lat, marker='*', color='k', markersize=6, transform=ccrs.PlateCarree())
 
-            # if grid, plots the lat  / lon lines on the map
-            if self.grid:
-                # if it's hires ('f' or 'h'), every 10 degrees
-                if self.res in ['h','f']:
-                    self.m.drawmeridians(np.arange(0, 360, 5), labels=[0,0,0,1], fontsize=14)
-                    self.m.drawparallels(np.arange(-80, 80+5, 5), labels=[1,0,0,0], fontsize=14)
-                # if not hires, plots lines every 40 degrees
-                else:
-                    self.m.drawmeridians(np.arange(0, 360, 60), labels=[0,0,0,1], fontsize=14)
-                    self.m.drawparallels(np.arange(-80, 80+10, 40), labels=[1,0,0,0], fontsize=14)
+        return f, ax
 
-            if not(self.border):
-                ax.axis('off')
+        self.dset_domain.close()
 
-            # set the title from the description in the dataset + variable JSON entry
-            ax.set_title(self.analogs.dset_dict['description'], fontsize=14)
-
-            # proxies_loc is True, we plot the proxies locations on the map
-            if self.proxies_loc:
-                locs = self.analogs.locations
-                for k in locs.keys():
-                    lon, lat = locs[k]
-                    if (lon > 180):
-                        lon -= 360.
-                    self.m.plot(lon, lat, marker='D', color='m', markersize=8, latlon=True)
-
-            return f
-
-            self.dset_domain.close()
-
-            plt.close(f)
+        plt.close(f)

@@ -1,8 +1,10 @@
 import numpy as np
 from numpy import ma
 from matplotlib import pyplot as plt
-from mpl_toolkits.basemap import Basemap as bm
-from mpl_toolkits.basemap import addcyclic
+# from mpl_toolkits.basemap import Basemap as bm
+# from mpl_toolkits.basemap import addcyclic
+from cartopy import crs as ccrs
+import cartopy
 import palettable
 
 class vector_plot:

@@ -1,4 +1,5 @@
 import os
+import warnings
 import numpy as np
 from numpy import ma
 import json
@@ -6,7 +7,7 @@ import bottleneck  as bn
 from matplotlib.mlab import detrend_linear
 from scipy.stats import ttest_ind
 from ..utils import seasons_params
-import xarray as xray
+import xarray as xr
 
 
 class analogs:
@@ -82,7 +83,7 @@ class analogs:
         fname = self.dset_dict['path']
 
         # `dset` is now an attribute of the composite object
-        self.dset = xray.open_dataset(fname)
+        self.dset = xr.open_dataset(fname)
 
         # get the variable and its index
         m_var = self.dset[self.variable].data
@@ -167,11 +168,11 @@ class analogs:
 
         if repeats:
             # extract the composite sample: it INCLUDES the repeated years
-            compos_s = xray.concat([self.dset['seas_var'].sel(dates=str(y)) for y in self.analog_years], dim='dates')
+            compos_s = xr.concat([self.dset['seas_var'].sel(dates=str(y)) for y in self.analog_years], dim='dates')
             ayears = self.analog_years
         else:
             # extract the composite sample EXCLUDING the repeated years
-            compos_s = xray.concat([self.dset['seas_var'].sel(dates=str(y)) for y in np.unique(self.analog_years)], dim='dates')
+            compos_s = xr.concat([self.dset['seas_var'].sel(dates=str(y)) for y in np.unique(self.analog_years)], dim='dates')
             ayears = np.unique(self.analog_years)
 
 
@@ -186,23 +187,25 @@ class analogs:
             # if weigthing, multiply by the weights (come from
             # either a proxy or an ensemble)
 
-            # cast that into a xray.DataArray sharing the same axis than the composite anomalies
-            weights_arr = xray.DataArray(np.array(self.parent.weights), dims=('dates'), coords={'dates':compos_a.dates.data})
+            # cast that into a xr.DataArray sharing the same axis than the composite anomalies
+            weights_arr = xr.DataArray(np.array(self.parent.weights), dims=('dates'), coords={'dates':compos_a.dates.data})
 
             compos_a = (compos_a * weights_arr) / weights_arr.sum('dates')
 
         # get the composite anomalies into a DataArray
-        # compos_a_x = xray.DataArray(ma.masked_array(compos_a.data, np.isnan(compos_a.data)), dims=('years','latitudes','longitudes'),
+        # compos_a_x = xr.DataArray(ma.masked_array(compos_a.data, np.isnan(compos_a.data)), dims=('years','latitudes','longitudes'),
         #                       coords={'years':ayears, 'latitudes':self.dset.latitudes, 'longitudes':self.dset.longitudes})
         # if test is True, then the standard Student t-test is calculated
         if test:
-            t, pvalues = ttest_ind(compos_s.data, clim.data, axis=0)
-            # pvalues contains the p-values, we can delete the Test statistics
+            with warnings.catch_warnings():
+                warnings.simplefilter("ignore", category=RuntimeWarning)
+                t, pvalues = ttest_ind(compos_s, clim, axis=0)
+                # pvalues contains the p-values, we can delete the Test statistics
             del(t)
 
 
         # store the anomalies and the composite anomalies
-        # in the xray Dataset
+        # in the xr Dataset
 
         # saves the pvalues
         self.dset['pvalues'] = (('latitudes','longitudes'), pvalues)
@@ -211,9 +214,11 @@ class analogs:
 
         self.dset['composite_sample'] = (('years','latitudes','longitudes'), compos_s.data)
 
-        self.dset['composite_anomalies'] = (('latitudes','longitudes'), compos_a.mean('dates').data)
+        with warnings.catch_warnings():
+            warnings.simplefilter("ignore", category=RuntimeWarning)
+            self.dset['composite_anomalies'] = (('latitudes','longitudes'), compos_a.mean('dates').data)
 
-        self.dset['weights'] = xray.DataArray(np.array(self.parent.weights), dims=('years'), coords={'years':self.dset.years.data})
+        self.dset['weights'] = xr.DataArray(np.array(self.parent.weights), dims=('years'), coords={'years':self.dset.years.data})
 
         # eliminate the variables not needed
 
