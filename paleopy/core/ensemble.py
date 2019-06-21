@@ -44,9 +44,12 @@ class ensemble:
         super(ensemble, self).__init__()
         # type
         self.description = 'ensemble'
-        # `jsons` is the path to the individual proxies JSON files
+
+        # `djsons` is the path to the jsons files describing the datasets etc
         self.djsons = djsons
+        # `pjsons` is the path to the individual proxies JSON files
         self.pjsons = pjsons
+
         self.season = season
 
         lfiles = glob(os.path.join(self.pjsons, "*.json"))
