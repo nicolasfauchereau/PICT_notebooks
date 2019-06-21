@@ -37,7 +37,8 @@ def bar(wr, sig):
 
         ax1 = fig.add_subplot(111)
 
-        ax1.bar(np.arange(0.5, len(clim_probs)+0.5), clim_probs * 100, color="0.8", width=1., alpha=0.8)
+        ax1.bar(np.arange(0, len(clim_probs)), clim_probs * 100, color="0.8", width=1., alpha=0.8)
+
         ax1.set_ylabel("climatological frequency %", fontsize=14)
 
         [l.set_fontsize(14) for l in ax1.yaxis.get_ticklabels()]
@@ -107,7 +108,7 @@ def bar(wr, sig):
         """
         ax1 = axes[0]
 
-        ax1.bar(np.arange(0.5, nregimes+0.5), clim_probs * 100, color="0.8", width=1., alpha=0.8)
+        ax1.bar(np.arange(1, nregimes+1), clim_probs * 100, facecolor="0.8", edgecolor='k', width=1., alpha=0.8)
 
         ax1.set_ylabel("climatological frequency (%)", fontsize=14)
 
@@ -131,14 +132,14 @@ def bar(wr, sig):
         for i in range(nregimes):
             if df_anoms.iloc[i,:].values >= 0:
                 if testb.iloc[i]:
-                    ax2.bar(i+0.5, df_anoms.iloc[i,:].values, color='r',width=1., alpha=1.)
+                    ax2.bar(i+1, df_anoms.iloc[i,:].values, facecolor='r', edgecolor='k', width=1., alpha=1.)
                 else:
-                    ax2.bar(i+0.5, df_anoms.iloc[i,:].values, color='coral',width=1., alpha=.3)
+                    ax2.bar(i+1, df_anoms.iloc[i,:].values, facecolor='coral', edgecolor='0.8', width=1., alpha=.3)
             else:
                 if testb.iloc[i]:
-                    ax2.bar(i+0.5, df_anoms.iloc[i,:].values, color='b',width=1., alpha=1.)
+                    ax2.bar(i+1, df_anoms.iloc[i,:].values, facecolor='b',edgecolor='k', width=1., alpha=1.)
                 else:
-                    ax2.bar(i+0.5, df_anoms.iloc[i,:].values, color='steelblue',width=1., alpha=.3)
+                    ax2.bar(i+1, df_anoms.iloc[i,:].values, facecolor='steelblue', edgecolor='0.8', width=1., alpha=.3)
 
         # move the ticks and labels to the right
         ax2.yaxis.tick_right()
