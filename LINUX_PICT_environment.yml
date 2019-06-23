@@ -12,7 +12,7 @@ dependencies:
   - bzip2=1.0.6=h14c3975_1002
   - ca-certificates=2019.6.16=hecc5488_0
   - cartopy=0.17.0=py36h0aa2c8f_1004
-  - certifi=2019.3.9=py36_0
+  - certifi=2019.6.16=py36_0
   - cffi=1.12.3=py36h8022711_0
   - cftime=1.0.3.4=py36hd352d35_1001
   - chardet=3.0.4=py36_1003
@@ -156,6 +156,8 @@ dependencies:
   - wheel=0.33.4=py36_0
   - widgetsnbextension=3.4.2=py36_1000
   - xarray=0.12.1=py_0
+  - xlrd=1.2.0=py_0
+  - xlsxwriter=1.1.8=py_0
   - xorg-libxau=1.0.9=h14c3975_0
   - xorg-libxdmcp=1.1.3=h516909a_0
   - xz=5.2.4=h14c3975_1001
