@@ -55,6 +55,10 @@ class scalar_plot:
             self.dset_domain = dset_domain
         else:
             self.dset_domain = self.analogs.dset
+            self.domain = [self.analogs.dset['longitudes'].data.min(), \
+                self.analogs.dset['longitudes'].data.max(), \
+                    self.analogs.dset['latitudes'].data.min(), \
+                        self.analogs.dset['latitudes'].data.max()]
         return self
 
     def _get_plots_params(self, data):
@@ -200,7 +204,8 @@ class scalar_plot:
 
         # we also adjust the gridlines according to the resolution
         if res in ['low','l']:
-            ax.coastlines(resolution='50m')
+
+            ax.coastlines(resolution='50m', linewidth=0.5)
 
             xticks = np.arange(0, 400., 40)
 
@@ -220,8 +225,9 @@ class scalar_plot:
 
             ax.yaxis.set_major_formatter(lat_formatter)
 
-        else:
-            ax.coastlines(resolution='10m')
+        elif res in ['high','h']:
+
+            ax.coastlines(resolution='10m', linewidth=0.5)
 
             xticks = np.arange(0, 400., 5)
 
@@ -241,6 +247,33 @@ class scalar_plot:
 
             ax.yaxis.set_major_formatter(lat_formatter)
 
+        elif res in ['full', 'f']:
+
+            ax.coastlines(resolution='10m', linewidth=0.5)
+
+            xticks = np.arange(self.domain[0], self.domain[1] + 3, 3)
+
+            yticks = np.arange(self.domain[2], self.domain[3] + 3, 3)
+
+            gl = ax.gridlines(draw_labels=False, linewidth=0.5, linestyle='--', xlocs=xticks, ylocs=yticks, crs=ccrs.PlateCarree())
+
+            ax.set_xticks(xticks, crs=ccrs.PlateCarree())
+
+            ax.set_yticks(yticks, crs=ccrs.PlateCarree())
+
+            lon_formatter = LongitudeFormatter(zero_direction_label=True, dateline_direction_label=True)
+
+            lat_formatter = LatitudeFormatter()
+
+            ax.xaxis.set_major_formatter(lon_formatter)
+
+            ax.yaxis.set_major_formatter(lat_formatter)
+
+        else:
+
+            print('resolution invalid, got {}, expect `low, l, high, h or full, f`'.format(res))
+
+
         gl.xlabels_top = False
         gl.ylabels_right = False
 
@@ -250,8 +283,7 @@ class scalar_plot:
         # set the title from the description in the dataset + variable JSON entry
         ax.set_title(self.analogs.dset_dict['description'], fontsize=14)
 
-        if self.domain is not None:
-            ax.set_extent(self.domain, crs=ccrs.PlateCarree(central_longitude=0))
+        ax.set_extent(self.domain, crs=ccrs.PlateCarree(central_longitude=0))
 
         # proxies_loc is True, we plot the proxies locations on the map
         if self.proxies_loc:
