@@ -37,7 +37,7 @@ def bar(wr, sig):
 
         ax1 = fig.add_subplot(111)
 
-        ax1.bar(np.arange(0, len(clim_probs)), clim_probs * 100, color="0.8", width=1., alpha=0.8)
+        ax1.bar(np.arange(1, len(clim_probs) + 1), clim_probs * 100, color="0.8", width=1., alpha=0.8)
 
         ax1.set_ylabel("climatological frequency %", fontsize=14)
 
@@ -54,7 +54,7 @@ def bar(wr, sig):
 
         df_anoms = wr.df_anoms * 100
 
-        bp = df_anoms.T.boxplot(ax=ax2, patch_artist=True);
+        bp = df_anoms.T.boxplot(ax=ax2, patch_artist=True, return_type='dict');
 
         wrone = copy(wr)
 
@@ -66,12 +66,12 @@ def bar(wr, sig):
         for i,b in enumerate(bp['boxes']):
             if wrone.df_anoms.iloc[i,:].values >= 0:
                 plt.setp(b,facecolor='coral', edgecolor='coral', alpha=0.5)
-                plt.plot(i+1,wrone.df_anoms.iloc[i,:]*100, 'r*')
+                plt.plot(i+1,wrone.df_anoms.iloc[i,:]*100, 'k*')
                 if testb[i]:
                     plt.setp(b,facecolor='r', edgecolor='r', alpha=0.9)
             else:
                 plt.setp(b,facecolor='steelblue', edgecolor='steelblue', alpha=0.5)
-                plt.plot(i+1,wrone.df_anoms.iloc[i,:]*100, 'b*')
+                plt.plot(i+1,wrone.df_anoms.iloc[i,:]*100, 'k*')
                 if testb[i]:
                     plt.setp(b,facecolor='b', edgecolor='b', alpha=0.9)
 

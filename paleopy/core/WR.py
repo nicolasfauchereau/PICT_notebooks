@@ -82,7 +82,7 @@ class WR:
     def _get_clim_probs(self):
         if not(hasattr(self, 'ts_seas')):
             ts_seas = self._get_season_ts()
-        ts = ts_seas.ix[str(self.climatology[0]): str(self.climatology[1])].copy()
+        ts = ts_seas.loc[str(self.climatology[0]): str(self.climatology[1]),:].copy()
         types = self.dict_json[self.classification]['types']
         clim_probs = get_probs(ts['type'], types)
         # create a pandas.Series, index are the types
@@ -107,7 +107,7 @@ class WR:
             ts_seas = self._get_season_ts()
         ayears = list(map(str, analog_years))
         ts = ts_seas.copy()
-        ts = pd.concat([ts.ix[l] for l in ayears])
+        ts = pd.concat([ts.loc[l,:] for l in ayears])
         types = self.dict_json[self.classification]['types']
         obs_probs = get_probs(ts['type'], types)
         obs_probs = pd.Series(obs_probs, index=types)
