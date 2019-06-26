@@ -9,5 +9,6 @@ a dedicated conda environment
 	+ `conda env create -f MAC_PICT_environment.yml` on a Mac 
 	or 
 	+ `conda env create -f LINUX_PICT_environment.yml` on Linux 
+4) activate the `PICT_notebooks` environment by runnning `conda activate PICT_notebooks` at the command line, then run `jupyter notebook` or `jupyter lab`
 
 
