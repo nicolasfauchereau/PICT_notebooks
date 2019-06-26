@@ -42,12 +42,12 @@ def heatmap(wr):
 
     for i in range(anoms.shape[0]):
         for j in range(anoms.shape[1]): # maybe not hard code that
-            if sig95[i,j]:
+            if sig95[i,j] and not sig99[i,j]:
                 ax.plot(j+0.50,i+0.50, "s",  color='k', markersize=11, \
-                        markerfacecolor='None', zorder=1, mew=1.25)
+                        markerfacecolor='None', zorder=1, mew=1)
             if sig99[i,j]:
-                ax.plot(j+0.50+adj,i+0.50-adj, "x",  color='k', markersize=10, \
-                        markerfacecolor='None', zorder=1, mew=1.5)
+                ax.plot(j+0.50+adj,i+0.50-adj, "o",  color='k', markersize=11, \
+                        markerfacecolor='None', zorder=1, mew=3)
 
     ax.set_yticks(np.arange(0.5, anoms.shape[0] + 0.5))
     ax.set_yticklabels(df_anoms.index[::-1])

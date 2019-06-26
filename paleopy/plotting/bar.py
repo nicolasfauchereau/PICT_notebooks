@@ -37,7 +37,7 @@ def bar(wr, sig):
 
         ax1 = fig.add_subplot(111)
 
-        ax1.bar(np.arange(1, len(clim_probs) + 1), clim_probs * 100, color="0.8", width=1., alpha=0.8)
+        ax1.bar(np.arange(1, len(clim_probs) + 1), clim_probs * 100, color="0.8", edgecolor='k', width=1., alpha=0.8)
 
         ax1.set_ylabel("climatological frequency %", fontsize=14)
 
@@ -64,23 +64,25 @@ def bar(wr, sig):
         | (wrone.df_probs['ensemble'] > wrone.df_probs["{}".format((100-sig))]).values
 
         for i,b in enumerate(bp['boxes']):
-            if wrone.df_anoms.iloc[i,:].values >= 0:
-                plt.setp(b,facecolor='coral', edgecolor='coral', alpha=0.5)
-                plt.plot(i+1,wrone.df_anoms.iloc[i,:]*100, 'k*')
-                if testb[i]:
-                    plt.setp(b,facecolor='r', edgecolor='r', alpha=0.9)
-            else:
-                plt.setp(b,facecolor='steelblue', edgecolor='steelblue', alpha=0.5)
-                plt.plot(i+1,wrone.df_anoms.iloc[i,:]*100, 'k*')
-                if testb[i]:
-                    plt.setp(b,facecolor='b', edgecolor='b', alpha=0.9)
+            if wrone.df_anoms.iloc[i,:].values >= 0 and testb[i]:
+                plt.setp(b, facecolor='coral', edgecolor='k', linewidth=2.5, alpha=1)
+            elif wrone.df_anoms.iloc[i,:].values >= 0 and not testb[i]:
+                plt.setp(b, facecolor='coral', edgecolor='0.8', alpha=0.5)
+            elif wrone.df_anoms.iloc[i,:].values < 0 and testb[i]:
+                plt.setp(b, facecolor='steelblue', edgecolor='k', linewidth=2.5, alpha=1)
+            elif wrone.df_anoms.iloc[i,:].values < 0 and not testb[i]:
+               plt.setp(b,facecolor='steelblue', edgecolor='k', alpha=0.5)
+
+            plt.plot(i+1,wrone.df_anoms.iloc[i,:]*100, 'ko', zorder=11)
 
         plt.setp(bp['fliers'], color='gray', marker='+',visible=True)
+
         plt.setp(bp['medians'],color='k',linewidth=1)
 
         [l.set_fontsize(14) for l in ax2.xaxis.get_ticklabels()]
         [l.set_fontsize(14) for l in ax2.yaxis.get_ticklabels()]
         [l.set_rotation(90) for l in ax2.xaxis.get_ticklabels()]
+
         ax2.set_title("{} Weather Regimes".format(wr.classification), fontsize=14)
 
 
@@ -132,14 +134,14 @@ def bar(wr, sig):
         for i in range(nregimes):
             if df_anoms.iloc[i,:].values >= 0:
                 if testb.iloc[i]:
-                    ax2.bar(i+1, df_anoms.iloc[i,:].values, facecolor='r', edgecolor='k', width=1., alpha=1.)
+                    ax2.bar(i+1, df_anoms.iloc[i,:].values, facecolor='coral', edgecolor='k', linewidth=2, width=1., alpha=1.)
                 else:
-                    ax2.bar(i+1, df_anoms.iloc[i,:].values, facecolor='coral', edgecolor='0.8', width=1., alpha=.3)
+                    ax2.bar(i+1, df_anoms.iloc[i,:].values, facecolor='coral', edgecolor='0.8', width=1., alpha=.5)
             else:
                 if testb.iloc[i]:
-                    ax2.bar(i+1, df_anoms.iloc[i,:].values, facecolor='b',edgecolor='k', width=1., alpha=1.)
+                    ax2.bar(i+1, df_anoms.iloc[i,:].values, facecolor='steelblue',edgecolor='k', linewidth=2, width=1., alpha=1.)
                 else:
-                    ax2.bar(i+1, df_anoms.iloc[i,:].values, facecolor='steelblue', edgecolor='0.8', width=1., alpha=.3)
+                    ax2.bar(i+1, df_anoms.iloc[i,:].values, facecolor='steelblue', edgecolor='0.8', width=1., alpha=.5)
 
         # move the ticks and labels to the right
         ax2.yaxis.tick_right()

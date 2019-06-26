@@ -229,9 +229,9 @@ class scalar_plot:
 
             ax.coastlines(resolution='10m', linewidth=0.5)
 
-            xticks = np.arange(0, 400., 5)
+            xticks = np.arange(0, 365., 5)
 
-            yticks = np.arange(-80., 100., 5.)
+            yticks = np.arange(-80., 85., 5.)
 
             gl = ax.gridlines(draw_labels=False, linewidth=0.5, linestyle='--', xlocs=xticks, ylocs=yticks, crs=ccrs.PlateCarree())
 

@@ -51,7 +51,7 @@ class WR:
         if not(hasattr(self, 'dict_json')):
             self.dict_json = self._get_WR_json()
         f = h5py.File(self.dict_json[self.classification]['Markov Chains'], mode='r')
-        MC_probs = f[self.season]['probs'].value
+        MC_probs = f[self.season]['probs'][()]
         MC_probs_classes = f[self.season]['probs'].attrs['classes']
         f.close()
         MC_probs_classes = MC_probs_classes.split(',')

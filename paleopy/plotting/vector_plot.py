@@ -1,10 +1,9 @@
 import numpy as np
 from numpy import ma
 from matplotlib import pyplot as plt
-# from mpl_toolkits.basemap import Basemap as bm
-# from mpl_toolkits.basemap import addcyclic
 from cartopy import crs as ccrs
-import cartopy
+from cartopy.util import add_cyclic_point
+from cartopy.mpl.ticker import LongitudeFormatter, LatitudeFormatter
 import palettable
 
 class vector_plot:
@@ -17,16 +16,10 @@ class vector_plot:
 
         self.windspeed = np.sqrt(np.power(self.uanoms, 2) + np.power(self.vanoms, 2))
 
-    def plotmap(self, domain = [0., 360., -90., 90.], res='c', stepp=2, scale=20):
+    def plot(self, domain = [0., 360., -90., 90.], res='c', stepp=2, scale=20):
 
         latitudes = self.windspeed.latitudes.data
         longitudes = self.windspeed.longitudes.data
-
-        m = bm(projection='cyl',llcrnrlat=latitudes.min(),urcrnrlat=latitudes.max(),\
-        llcrnrlon=longitudes.min(),urcrnrlon=longitudes.max(),\
-        lat_ts=0, resolution=res)
-
-        lons, lats = np.meshgrid(longitudes, latitudes)
 
         cmap = palettable.colorbrewer.sequential.Oranges_9.mpl_colormap
 
