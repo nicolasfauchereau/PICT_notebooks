@@ -55,20 +55,18 @@ class indices():
             self._read_csv()
 
         if isinstance(self.data, pd.core.frame.DataFrame):
-            compos = pd.concat([self.data.ix[str(y)] for y in self.analog_years])
+            self.compos = pd.concat([self.data.loc[str(y),: ] for y in self.analog_years])
 
         elif isinstance(self.data, dict):
             compos = {}
             for i, k in enumerate(self.data):
                 df = self.data[k]
-                compos[k] = pd.concat([df.ix[str(y)] for y in self.analog_years])
+                compos[k] = pd.concat([df.loc[str(y),:] for y in self.analog_years])
             list_index = list(compos.keys())
             df = copy(compos[list_index[0]])
             for k in list_index[1:]:
                 df.loc[:,k] = compos[k]
-            compos = df
-
-        self.compos = compos
+            self.compos = df
 
     def _plot_df(self, df, ax, ax_n = 0, pval = None, signif = None):
         """
@@ -76,7 +74,7 @@ class indices():
         one column (one index)
         """
 
-        b = df.boxplot(ax = ax, widths=0.85, patch_artist=True)
+        b = df.boxplot(ax = ax, widths=0.85, patch_artist=True, return_type='dict')
 
         if df.mean().values < 0:
             plt.setp(b['boxes'],facecolor='steelblue', edgecolor='steelblue', alpha=0.5)
@@ -84,8 +82,8 @@ class indices():
             plt.setp(b['medians'],color='k',linewidth=1)
             ax.set_ylim(-3, 3)
             if pval < signif:
-                ax.plot(1, df.mean().values, 's', color='b', ms=10, markeredgewidth=3,\
-                markeredgecolor='k', alpha=0.5)
+                ax.plot(1, df.mean().values, 's', color='b', ms=10, markeredgewidth=2.5,\
+                markeredgecolor='k', alpha=1)
             else:
                 ax.plot(1, df.mean().values, 's', color='b', ms=10, alpha=0.5)
 
@@ -95,8 +93,8 @@ class indices():
             plt.setp(b['medians'],color='k',linewidth=1)
             ax.set_ylim(-3, 3)
             if pval < signif:
-                ax.plot(1, df.mean().values, 's', color='r', ms=10, markeredgewidth=3,\
-                markeredgecolor='k', alpha=0.5)
+                ax.plot(1, df.mean().values, 's', color='r', ms=10, markeredgewidth=2.5,\
+                markeredgecolor='k', alpha=1)
             else:
                 ax.plot(1, df.mean().values, 's', color='r', ms=10, alpha=0.5)
 
@@ -128,7 +126,9 @@ class indices():
             l = len(self.compos.columns)
             f, axes = plt.subplots(nrows=1, ncols=l, figsize=(l,6), sharey=True)
             f.subplots_adjust(wspace=0.0, left=0.15, bottom=0.05, top=0.87)
+
             axes = axes.flatten('F')
+
             for i, k in enumerate(self.compos.columns):
 
                 df = self.compos[[k]]
