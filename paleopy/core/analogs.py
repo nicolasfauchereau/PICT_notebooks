@@ -85,6 +85,9 @@ class analogs:
         # `dset` is now an attribute of the composite object
         self.dset = xr.open_dataset(fname)
 
+        # sort by latitudes ...
+        self.dset = self.dset.sortby('latitudes')
+
         # get the variable and its index
         m_var = self.dset[self.variable].data
         index = self.dset['time'].to_index()

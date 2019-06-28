@@ -124,19 +124,6 @@ class scalar_plot:
                 self.crs = ccrs.PlateCarree(central_longitude=0)
 
             if self.proj in ['cyl', 'merc']:
-                """
-                NOTE: using a Mercator projection won't work if either / both
-                the northermost / southermost latitudes are 90 / -90
-
-                if one wants (but why would you do that ?) to plot a global
-                domain in merc, one needs to pass:
-
-                domain = [0., 360., -89.9, 89.9]
-
-                to the `scalar_plot` class
-
-                Any sub-domain of a global domain will work fine
-                """
                 self.crs = ccrs.PlateCarree(central_longitude=180)
 
             if self.proj == 'moll':
@@ -185,12 +172,16 @@ class scalar_plot:
 
         # if the domain is global, we wrap the longitudes
         if wrap_longitudes:
-            mat = _wrap_longitudes(mat)
-            pvalues = _wrap_longitudes(pvalues)
+            mat = self._wrap_longitudes(mat)
+            pvalues = self._wrap_longitudes(pvalues)
 
         r, c = mat.shape
 
         f, ax = plt.subplots(figsize=(5*(c/r), 5), dpi=200, subplot_kw={'projection':self.crs})
+
+        if self.proj == 'spstere':
+            mat = mat.sel(latitudes=slice(-90, 0))
+            pvalues = pvalues.sel(latitudes=slice(-90, 0))
 
         mat.plot.contourf(ax=ax, levels=20, cmap=cmap, transform=ccrs.PlateCarree(), \
             cbar_kwargs={'shrink':0.7, 'label':units})
@@ -207,83 +198,113 @@ class scalar_plot:
 
             ax.coastlines(resolution='50m', linewidth=0.5)
 
-            xticks = np.arange(0, 400., 40)
+            if self.proj not in ['spstere','npstere']:
 
-            yticks = np.arange(-80., 100., 20.)
+                xticks = np.arange(0, 400., 40)
 
-            gl = ax.gridlines(draw_labels=False, linewidth=0.5, linestyle='--', xlocs=xticks, ylocs=yticks, crs=ccrs.PlateCarree())
+                yticks = np.arange(-80., 100., 20.)
 
-            ax.set_xticks(xticks, crs=ccrs.PlateCarree())
+                gl = ax.gridlines(draw_labels=False, linewidth=0.5, linestyle='--', xlocs=xticks, ylocs=yticks, crs=ccrs.PlateCarree())
 
-            ax.set_yticks(yticks, crs=ccrs.PlateCarree())
+                ax.set_xticks(xticks, crs=ccrs.PlateCarree())
 
-            lon_formatter = LongitudeFormatter(zero_direction_label=True, dateline_direction_label=True)
+                ax.set_yticks(yticks, crs=ccrs.PlateCarree())
 
-            lat_formatter = LatitudeFormatter()
+                lon_formatter = LongitudeFormatter(zero_direction_label=True, dateline_direction_label=True)
 
-            ax.xaxis.set_major_formatter(lon_formatter)
+                lat_formatter = LatitudeFormatter()
 
-            ax.yaxis.set_major_formatter(lat_formatter)
+                ax.xaxis.set_major_formatter(lon_formatter)
+
+                ax.yaxis.set_major_formatter(lat_formatter)
+
+                gl.xlabels_top = False
+                gl.ylabels_right = False
+
+                ax.set_ylabel('latitudes (degrees north)')
+                ax.set_xlabel('longitudes (degrees east)')
 
         elif res in ['high','h']:
 
             ax.coastlines(resolution='10m', linewidth=0.5)
 
-            xticks = np.arange(0, 365., 5)
+            if self.proj not in ['spstere','npstere']:
 
-            yticks = np.arange(-80., 85., 5.)
+                xticks = np.arange(0, 365., 5)
 
-            gl = ax.gridlines(draw_labels=False, linewidth=0.5, linestyle='--', xlocs=xticks, ylocs=yticks, crs=ccrs.PlateCarree())
+                yticks = np.arange(-80., 85., 5.)
 
-            ax.set_xticks(xticks, crs=ccrs.PlateCarree())
+                gl = ax.gridlines(draw_labels=False, linewidth=0.5, linestyle='--', xlocs=xticks, ylocs=yticks, crs=ccrs.PlateCarree())
 
-            ax.set_yticks(yticks, crs=ccrs.PlateCarree())
+                ax.set_xticks(xticks, crs=ccrs.PlateCarree())
 
-            lon_formatter = LongitudeFormatter(zero_direction_label=True, dateline_direction_label=True)
+                ax.set_yticks(yticks, crs=ccrs.PlateCarree())
 
-            lat_formatter = LatitudeFormatter()
+                lon_formatter = LongitudeFormatter(zero_direction_label=True, dateline_direction_label=True)
 
-            ax.xaxis.set_major_formatter(lon_formatter)
+                lat_formatter = LatitudeFormatter()
 
-            ax.yaxis.set_major_formatter(lat_formatter)
+                ax.xaxis.set_major_formatter(lon_formatter)
+
+                ax.yaxis.set_major_formatter(lat_formatter)
+
+                gl.xlabels_top = False
+                gl.ylabels_right = False
+
+                ax.set_ylabel('latitudes (degrees north)')
+                ax.set_xlabel('longitudes (degrees east)')
 
         elif res in ['full', 'f']:
 
             ax.coastlines(resolution='10m', linewidth=0.5)
 
-            xticks = np.arange(self.domain[0], self.domain[1] + 3, 3)
+            if self.proj not in ['spstere','npstere']:
 
-            yticks = np.arange(self.domain[2], self.domain[3] + 3, 3)
+                xticks = np.arange(self.domain[0], self.domain[1] + 3, 3)
 
-            gl = ax.gridlines(draw_labels=False, linewidth=0.5, linestyle='--', xlocs=xticks, ylocs=yticks, crs=ccrs.PlateCarree())
+                yticks = np.arange(self.domain[2], self.domain[3] + 3, 3)
 
-            ax.set_xticks(xticks, crs=ccrs.PlateCarree())
+                gl = ax.gridlines(draw_labels=False, linewidth=0.5, linestyle='--', xlocs=xticks, ylocs=yticks, crs=ccrs.PlateCarree())
 
-            ax.set_yticks(yticks, crs=ccrs.PlateCarree())
+                ax.set_xticks(xticks, crs=ccrs.PlateCarree())
 
-            lon_formatter = LongitudeFormatter(zero_direction_label=True, dateline_direction_label=True)
+                ax.set_yticks(yticks, crs=ccrs.PlateCarree())
 
-            lat_formatter = LatitudeFormatter()
+                lon_formatter = LongitudeFormatter(zero_direction_label=True, dateline_direction_label=True)
 
-            ax.xaxis.set_major_formatter(lon_formatter)
+                lat_formatter = LatitudeFormatter()
 
-            ax.yaxis.set_major_formatter(lat_formatter)
+                ax.xaxis.set_major_formatter(lon_formatter)
+
+                ax.yaxis.set_major_formatter(lat_formatter)
+
+                gl.xlabels_top = False
+                gl.ylabels_right = False
+
+                ax.set_ylabel('latitudes (degrees north)')
+                ax.set_xlabel('longitudes (degrees east)')
 
         else:
 
             print('resolution invalid, got {}, expect `low, l, high, h or full, f`'.format(res))
 
-
-        gl.xlabels_top = False
-        gl.ylabels_right = False
-
-        ax.set_ylabel('latitudes (degrees north)')
-        ax.set_xlabel('longitudes (degrees east)')
-
         # set the title from the description in the dataset + variable JSON entry
         ax.set_title(self.analogs.dset_dict['description'], fontsize=14)
 
-        ax.set_extent(self.domain, crs=ccrs.PlateCarree(central_longitude=0))
+        if self.proj not in ['spstere', 'npstere']:
+            ax.set_extent(self.domain, crs=ccrs.PlateCarree(central_longitude=0))
+
+        if self.proj in ['spstere', 'npstere']:
+            import matplotlib.path as mpath
+            # Compute a circle in axes coordinates, which we can use as a boundary
+            # for the map. We can pan/zoom as much as we like - the boundary will be
+            # permanently circular.
+            theta = np.linspace(0, 2*np.pi, 100)
+            center, radius = [0.5, 0.5], 0.5
+            verts = np.vstack([np.sin(theta), np.cos(theta)]).T
+            circle = mpath.Path(verts * radius + center)
+
+            ax.set_boundary(circle, transform=ax.transAxes)
 
         # proxies_loc is True, we plot the proxies locations on the map
         if self.proxies_loc:
