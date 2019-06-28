@@ -3,7 +3,7 @@ a dedicated conda environment
 
 ## installation instructions:
 
-1) clone the repository with git, or download the zip file (green `clone or download` button on the upper right of this repository)
+1) clone the repository with git, or download the zip file (green `clone or download` button on the upper right of this repository), if downloading the ZIP file rename the folder created from `PICT_notebooks-master` to `PICT_notebooks`.
 2) install the Anaconda python distribution from [https://www.anaconda.com/distribution/](https://www.anaconda.com/distribution/), choose the **Python 3.7** version, not the Python 2.7 version. 
 3) in the repository directory, run at the command line (on a Mac, go to `Applications / Utilities / Terminal`):
 	+ `conda env create -f MAC_PICT_environment.yml` on a Mac
