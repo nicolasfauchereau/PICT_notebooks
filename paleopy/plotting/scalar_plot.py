@@ -182,6 +182,9 @@ class scalar_plot:
         if self.proj == 'spstere':
             mat = mat.sel(latitudes=slice(-90, 0))
             pvalues = pvalues.sel(latitudes=slice(-90, 0))
+        elif self.proj == 'npstere':
+            mat = mat.sel(latitudes=slice(0, 90))
+            pvalues = pvalues.sel(latitudes=slice(0, 90))
 
         mat.plot.contourf(ax=ax, levels=20, cmap=cmap, transform=ccrs.PlateCarree(), \
             cbar_kwargs={'shrink':0.7, 'label':units})

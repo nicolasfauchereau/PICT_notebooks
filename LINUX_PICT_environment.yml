@@ -89,6 +89,7 @@ dependencies:
   - msgpack-python=0.6.1=py36h6bb024c_0
   - nbconvert=5.5.0=py_0
   - nbformat=4.4.0=py_1
+  - nc-time-axis=1.2.0=py_0
   - ncurses=6.1=hf484d3e_1002
   - netcdf4=1.5.1.2=py36had58050_0
   - notebook=5.7.8=py36_1
@@ -104,6 +105,7 @@ dependencies:
   - pandocfilters=1.4.2=py_1
   - parso=0.4.0=py_0
   - partd=0.3.10=py_1
+  - patsy=0.5.1=py_0
   - pcre=8.41=hf484d3e_1003
   - pexpect=4.7.0=py36_0
   - pickleshare=0.7.5=py36_1000
@@ -143,6 +145,7 @@ dependencies:
   - six=1.12.0=py36_1000
   - sortedcontainers=2.1.0=py_0
   - sqlite=3.28.0=h8b20d00_0
+  - statsmodels=0.9.0=py36h3010b51_1000
   - tblib=1.4.0=py_0
   - terminado=0.8.2=py36_0
   - testpath=0.4.2=py_1001
