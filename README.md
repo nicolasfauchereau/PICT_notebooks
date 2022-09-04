@@ -11,3 +11,57 @@ a dedicated conda environment
 	+ `conda env create -f LINUX_PICT_environment.yml` on Linux
 4) activate the `PICT_notebooks` environment by runnning `conda activate PICT_notebooks` at the command line, then run `jupyter notebook` or `jupyter lab`
 5) navigate to the `notebooks` directory
+
+### Notes (PICT refactoring, September 2022):
+
+@TODO: 
+
+#### circulation regimes: 
+
+- K2K (Kidson 2000)
+- Southwest Pacific Regimes (Lorrey and Fauchereau, 2017)
+- 9 AP NZ circulation regimews (Rampal, Lorrey and Fauchereau, 2022) 
+
+- Ross Sea Types (see CPP/indices/notebooks/Ross_Sea_WRs/notebooks)
+- SH circulation 
+- SSTa (ERSST v5b)
+
+#### datasets and variables for composites 
+
+- VCSN, all daily variables (except wind)
+- AWAP (http://www.bom.gov.au/metadata/catalogue/19115/ANZCW0503900567) 
+- GPCP precipitation
+- NCEp:
+  - MSLP 
+  - u-wind 
+  - vector wind
+  - ? 
+
+#### Climate Indices
+
+- SAM
+- SOI
+- CEI 
+- Nino 3.4 
+- ZW3 * 
+- PSA 
+- IOD 
+
+#### Features
+
+- Analog Selection, equal and inverse distance weighting
+- Heatmaps for all CRs / synoptic types
+- Histogram outputs for all CRs / synoptic types
+- Ensemble Generation 
+- Climatology Periods
+- Detrended vs un-detrended
+- version control and tracking of the proxy files
+
+#### A maybe 
+
+- widgets ?
+
+
+
+
+
