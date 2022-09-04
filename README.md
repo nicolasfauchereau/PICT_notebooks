@@ -21,7 +21,6 @@ a dedicated conda environment
 - K2K (Kidson 2000)
 - Southwest Pacific Regimes (Lorrey and Fauchereau, 2017)
 - 9 AP NZ circulation regimews (Rampal, Lorrey and Fauchereau, 2022) 
-
 - Ross Sea Types (see CPP/indices/notebooks/Ross_Sea_WRs/notebooks)
 - SH circulation 
 - SSTa (ERSST v5b)
