@@ -28,6 +28,8 @@ a dedicated conda environment
 #### datasets and variables for composites 
 
 - VCSN, all daily variables (except wind)
+  - Rain_bc instead of Rain 
+  - Tmean (Norton) instead of regular Tmean 
 - AWAP (http://www.bom.gov.au/metadata/catalogue/19115/ANZCW0503900567) 
 - GPCP precipitation
 - NCEp:
