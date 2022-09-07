@@ -32,11 +32,15 @@ a dedicated conda environment
   - Tmean (Norton) instead of regular Tmean 
 - AWAP (http://www.bom.gov.au/metadata/catalogue/19115/ANZCW0503900567) 
 - GPCP precipitation
-- NCEp:
-  - MSLP 
-  - u-wind 
-  - vector wind
-  - ? 
+  - sourced from https://www.ncei.noaa.gov/data/global-precipitation-climatology-project-gpcp-monthly/access/ 
+- NCEP:
+
+sourced from https://downloads.psl.noaa.gov/Datasets/ncep.reanalysis.derived/
+
+  - MSLP: https://psl.noaa.gov/thredds/dodsC/Datasets/ncep.reanalysis.derived/surface/slp.mon.mean.nc.html 
+  - u-wind: https://psl.noaa.gov/thredds/dodsC/Datasets/ncep.reanalysis.derived/pressure/uwnd.mon.mean.nc.html 
+  - vector wind: https://psl.noaa.gov/thredds/dodsC/Datasets/ncep.reanalysis.derived/surface/slp.mon.mean.nc.html and https://psl.noaa.gov/thredds/dodsC/Datasets/ncep.reanalysis.derived/pressure/vwnd.mon.mean.nc.html 
+  - HGT ? if so: https://psl.noaa.gov/thredds/dodsC/Datasets/ncep.reanalysis.derived/pressure/hgt.mon.mean.nc.html 
 
 #### Climate Indices
 
