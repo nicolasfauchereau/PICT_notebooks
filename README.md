@@ -45,10 +45,21 @@ sourced from https://psl.noaa.gov/thredds/dodsC/Datasets/gpcp/precip.mon.mean.nc
 sourced from https://downloads.psl.noaa.gov/Datasets/ncep.reanalysis.derived/
 
   - MSLP: https://psl.noaa.gov/thredds/dodsC/Datasets/ncep.reanalysis.derived/surface/slp.mon.mean.nc.html 
+  
   - u-wind: https://psl.noaa.gov/thredds/dodsC/Datasets/ncep.reanalysis.derived/pressure/uwnd.mon.mean.nc.html 
+  
   - vector wind: https://psl.noaa.gov/thredds/dodsC/Datasets/ncep.reanalysis.derived/surface/slp.mon.mean.nc.html and https://psl.noaa.gov/thredds/dodsC/Datasets/ncep.reanalysis.derived/pressure/vwnd.mon.mean.nc.html 
-  - HGT ? if so: https://psl.noaa.gov/thredds/dodsC/Datasets/ncep.reanalysis.derived/pressure/hgt.mon.mean.nc.html 
 
+    in one dataset (NCEP1_monthly_wind_1948_2021.nc), levels 1000, 850, 200 
+
+  - HGT: https://psl.noaa.gov/thredds/dodsC/Datasets/ncep.reanalysis.derived/pressure/hgt.mon.mean.nc.html 
+
+    levels: 1000, 850, 200 
+
+  - Omega: https://psl.noaa.gov/thredds/dodsC/Datasets/ncep.reanalysis.derived/pressure/omega.mon.mean.nc.html
+
+    levels: 500 (variable name: 'omega_500')
+  
 #### Climate Indices
 
 - SAM
