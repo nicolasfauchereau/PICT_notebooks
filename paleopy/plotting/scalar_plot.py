@@ -191,7 +191,9 @@ class scalar_plot:
 
         # if test is defined, one contours the p-values for that level
         if self.test:
-            pvalues.plot.contour(levels = [self.test], colors='#8C001A', linewidths=1.5, transform=ccrs.PlateCarree())
+            pvalues_mask = pvalues.where(pvalues <= self.test)
+            pvalues_mask.plot.contourf(transform=ccrs.PlateCarree(), levels=2, colors="None", hatches=["..."], add_colorbar=False)
+            # pvalues.plot.contour(levels = [self.test], colors='#8C001A', linewidths=1.5, transform=ccrs.PlateCarree())
 
         # draw the coastlines, if the domain is global we use the 50 minutes resolution coastlines
         # dataset, and if not (res = 'high') we use the 10 minutes resolution (slower)
@@ -221,8 +223,8 @@ class scalar_plot:
 
                 ax.yaxis.set_major_formatter(lat_formatter)
 
-                gl.xlabels_top = False
-                gl.ylabels_right = False
+                gl.top_labels = False
+                gl.right_labels = False
 
                 ax.set_ylabel('latitudes (degrees north)')
                 ax.set_xlabel('longitudes (degrees east)')
@@ -251,8 +253,8 @@ class scalar_plot:
 
                 ax.yaxis.set_major_formatter(lat_formatter)
 
-                gl.xlabels_top = False
-                gl.ylabels_right = False
+                gl.top_labels = False
+                gl.right_labels = False
 
                 ax.set_ylabel('latitudes (degrees north)')
                 ax.set_xlabel('longitudes (degrees east)')
@@ -281,8 +283,8 @@ class scalar_plot:
 
                 ax.yaxis.set_major_formatter(lat_formatter)
 
-                gl.xlabels_top = False
-                gl.ylabels_right = False
+                gl.top_labels = False
+                gl.right_labels = False
 
                 ax.set_ylabel('latitudes (degrees north)')
                 ax.set_xlabel('longitudes (degrees east)')
