@@ -22,12 +22,15 @@ a dedicated conda environment
 - [x] Southwest Pacific Regimes (Lorrey and Fauchereau, 2017)
 - [x] 9 AP NZ circulation regimes (Rampal, Lorrey and Fauchereau, 2022) 
 - [ ] Ross Sea Types (see CPP/indices/notebooks/Ross_Sea_WRs/notebooks)
-- [ ] SH circulation (??)
 
 
 #### datasets and variables for composites 
 
 - [x] SSTa (ERSST v5b)
+
+- [ ] Berkeley Earth Temperatures (http://berkeleyearth.lbl.gov/auto/Global/Gridded/Land_and_Ocean_LatLong1.nc) 
+
+- [ ]  
 
 - [x] VCSN, all daily variables (except wind)
 
@@ -42,25 +45,29 @@ Note: not available yet, update in progress
 
 sourced from https://psl.noaa.gov/thredds/dodsC/Datasets/gpcp/precip.mon.mean.nc.html 
 
-- [x] NCEP:
+- [ ] Monthly NCEP:
 
-sourced from https://downloads.psl.noaa.gov/Datasets/ncep.reanalysis.derived/
+sourced from https://psl.noaa.gov/thredds/catalog/Datasets/catalog.html 
 
-  - MSLP: https://psl.noaa.gov/thredds/dodsC/Datasets/ncep.reanalysis.derived/surface/slp.mon.mean.nc.html 
+  - [x] MSLP: https://psl.noaa.gov/thredds/dodsC/Datasets/ncep.reanalysis.derived/surface/slp.mon.mean.nc.html 
   
-  - u-wind: https://psl.noaa.gov/thredds/dodsC/Datasets/ncep.reanalysis.derived/pressure/uwnd.mon.mean.nc.html 
+  - [x] u-wind: https://psl.noaa.gov/thredds/dodsC/Datasets/ncep.reanalysis.derived/pressure/uwnd.mon.mean.nc.html 
   
-  - vector wind: https://psl.noaa.gov/thredds/dodsC/Datasets/ncep.reanalysis.derived/surface/slp.mon.mean.nc.html and https://psl.noaa.gov/thredds/dodsC/Datasets/ncep.reanalysis.derived/pressure/vwnd.mon.mean.nc.html 
+  - [x] vector wind: https://psl.noaa.gov/thredds/dodsC/Datasets/ncep.reanalysis.derived/surface/slp.mon.mean.nc.html and https://psl.noaa.gov/thredds/dodsC/Datasets/ncep.reanalysis.derived/pressure/vwnd.mon.mean.nc.html 
 
     in one dataset (NCEP1_monthly_wind_1948_2021.nc), levels 1000, 850, 200 
 
-  - HGT: https://psl.noaa.gov/thredds/dodsC/Datasets/ncep.reanalysis.derived/pressure/hgt.mon.mean.nc.html 
+  - [x] HGT: https://psl.noaa.gov/thredds/dodsC/Datasets/ncep.reanalysis.derived/pressure/hgt.mon.mean.nc.html 
 
     levels: 1000, 850, 200 
 
-  - Omega: https://psl.noaa.gov/thredds/dodsC/Datasets/ncep.reanalysis.derived/pressure/omega.mon.mean.nc.html
+  - [x] Omega: https://psl.noaa.gov/thredds/dodsC/Datasets/ncep.reanalysis.derived/pressure/omega.mon.mean.nc.html
 
     levels: 500 (variable name: 'omega_500')
+
+  - [ ] Mean Temperature (Tmean): https://psl.noaa.gov/thredds/dodsC/Datasets/ncep.reanalysis.derived/surface/air.mon.mean.nc.html 
+  
+  - [ ] Precipitable water: https://psl.noaa.gov/thredds/dodsC/Datasets/ncep.reanalysis.derived/surface/pr_wtr.eatm.mon.mean.nc.html
   
 #### Climate Indices
 
