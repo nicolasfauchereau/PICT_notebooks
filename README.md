@@ -18,16 +18,18 @@ a dedicated conda environment
 
 #### circulation regimes: 
 
-- K2K (Kidson 2000)
-- Southwest Pacific Regimes (Lorrey and Fauchereau, 2017)
-- 9 AP NZ circulation regimews (Rampal, Lorrey and Fauchereau, 2022) 
+- [x] K2K (Kidson 2000)
+- [x] Southwest Pacific Regimes (Lorrey and Fauchereau, 2017)
+- [x] 9 AP NZ circulation regimes (Rampal, Lorrey and Fauchereau, 2022) 
 - Ross Sea Types (see CPP/indices/notebooks/Ross_Sea_WRs/notebooks)
-- SH circulation 
-- SSTa (ERSST v5b)
+- SH circulation (??)
+
 
 #### datasets and variables for composites 
 
-- VCSN, all daily variables (except wind)
+- [x] SSTa (ERSST v5b)
+
+- [x] VCSN, all daily variables (except wind)
 
   - Rain_bc instead of Rain 
   - Tmean (Norton) instead of regular Tmean 
@@ -36,11 +38,11 @@ a dedicated conda environment
 
 Note: not available yet, update in progress
 
-- GPCP precipitation
+- [x] GPCP precipitation
 
 sourced from https://psl.noaa.gov/thredds/dodsC/Datasets/gpcp/precip.mon.mean.nc.html 
 
-- NCEP:
+- [x] NCEP:
 
 sourced from https://downloads.psl.noaa.gov/Datasets/ncep.reanalysis.derived/
 
@@ -72,12 +74,12 @@ sourced from https://downloads.psl.noaa.gov/Datasets/ncep.reanalysis.derived/
 
 #### Features
 
-- Analog Selection, equal and inverse distance weighting
+- [x] Analog Selection, equal and inverse distance weighting
 - Heatmaps for all CRs / synoptic types
 - Histogram outputs for all CRs / synoptic types
-- Ensemble Generation 
-- Climatology Periods
-- Detrended vs un-detrended
+- [x] Ensemble Generation 
+- [x] Climatology Periods
+- [x] Detrended vs un-detrended
 - version control and tracking of the proxy files
 
 #### A maybe 
