@@ -28,7 +28,7 @@ a dedicated conda environment
 
 - [x] SSTa (ERSST v5b)
 
-- [ ] Berkeley Earth Temperatures (http://berkeleyearth.lbl.gov/auto/Global/Gridded/Land_and_Ocean_LatLong1.nc) 
+- [x] Berkeley Earth Temperatures (http://berkeleyearth.lbl.gov/auto/Global/Gridded/Land_and_Ocean_LatLong1.nc) 
 
 - [ ]  
 
@@ -65,7 +65,7 @@ sourced from https://psl.noaa.gov/thredds/catalog/Datasets/catalog.html
 
     levels: 500 (variable name: 'omega_500')
 
-  - [ ] Mean Temperature (Tmean): https://psl.noaa.gov/thredds/dodsC/Datasets/ncep.reanalysis.derived/surface/air.mon.mean.nc.html 
+  - [x] Mean Temperature (Tmean): https://psl.noaa.gov/thredds/dodsC/Datasets/ncep.reanalysis.derived/surface/air.mon.mean.nc.html 
   
   - [ ] Precipitable water: https://psl.noaa.gov/thredds/dodsC/Datasets/ncep.reanalysis.derived/surface/pr_wtr.eatm.mon.mean.nc.html
   
