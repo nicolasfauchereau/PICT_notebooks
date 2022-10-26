@@ -34,7 +34,7 @@ a dedicated conda environment
   - Rain_bc instead of Rain 
   - Tmean (Norton) instead of regular Tmean 
 
-- AWAP (http://www.bom.gov.au/metadata/catalogue/19115/ANZCW0503900567) 
+- [ ] AWAP (http://www.bom.gov.au/metadata/catalogue/19115/ANZCW0503900567) 
 
 Note: not available yet, update in progress
 
@@ -75,12 +75,12 @@ sourced from https://downloads.psl.noaa.gov/Datasets/ncep.reanalysis.derived/
 #### Features
 
 - [x] Analog Selection, equal and inverse distance weighting
-- Heatmaps for all CRs / synoptic types
-- Histogram outputs for all CRs / synoptic types
+- [ ] Heatmaps for all CRs / synoptic types
+- [ ] Histogram outputs for all CRs / synoptic types
 - [x] Ensemble Generation 
 - [x] Climatology Periods
 - [x] Detrended vs un-detrended
-- version control and tracking of the proxy files
+- [ ] version control and tracking of the proxy files
 
 #### A maybe 
 
