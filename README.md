@@ -21,8 +21,8 @@ a dedicated conda environment
 - [x] K2K (Kidson 2000)
 - [x] Southwest Pacific Regimes (Lorrey and Fauchereau, 2017)
 - [x] 9 AP NZ circulation regimes (Rampal, Lorrey and Fauchereau, 2022) 
-- [] Ross Sea Types (see CPP/indices/notebooks/Ross_Sea_WRs/notebooks)
-- [] SH circulation (??)
+- [ ] Ross Sea Types (see CPP/indices/notebooks/Ross_Sea_WRs/notebooks)
+- [ ] SH circulation (??)
 
 
 #### datasets and variables for composites 
