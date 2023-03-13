@@ -20,7 +20,7 @@ a dedicated conda environment
 
 - [x] K2K (Kidson 2000)
 - [x] Southwest Pacific Regimes (Lorrey and Fauchereau, 2017)
-- [x] 9 AP NZ circulation regimes (Rampal, Lorrey and Fauchereau, 2022) 
+- [/] 9 AP NZ circulation regimes (Rampal, Lorrey and Fauchereau, 2022) 
 - [ ] Ross Sea Types (see CPP/indices/notebooks/Ross_Sea_WRs/notebooks)
 
 
@@ -39,7 +39,7 @@ a dedicated conda environment
 
 - [ ] AWAP (http://www.bom.gov.au/metadata/catalogue/19115/ANZCW0503900567) 
 
-Note: not available yet, update in progress
+Note: not available yet, update in progress, but the *Australian Gridded Climate Data (AGCD) v1/ Australian Water Availability Project (AWAP)* dataset is available to 2020 at https://dapds00.nci.org.au/thredds/catalog/zv2/agcd/v1/catalog.html. It includes *tmin*, *tmax* and *precip*. 
 
 - [x] GPCP precipitation
 
