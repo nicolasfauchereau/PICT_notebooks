@@ -243,7 +243,7 @@ class proxy:
         # then meshgrid, mask, flatten, etc
         if 'mask' in dset.data_vars:
             mask = dset['mask'].data
-            mask = mask.astype(np.bool)
+            mask = mask.astype(bool)
             lon = dset['longitudes'].data
             lat = dset['latitudes'].data
             lons, lats = np.meshgrid(lon, lat)
@@ -386,7 +386,7 @@ class proxy:
             if self.method == 'quintiles':
                 bins[0] = -np.inf
                 bins[-1] = np.inf
-                category = labels[np.searchsorted(bins, np.float(self.value))-1]
+                category = labels[np.searchsorted(bins, float(self.value))-1]
                 subset = ts[ts['cat'] == category]
                 self.category = category
                 tmp_df = subset.copy(deep=True)
@@ -461,7 +461,7 @@ class proxy:
                 json.dump(proxy_dict, f)
         self.proxy_dict = proxy_dict
 
-    def to_html(filename):
+    def to_html(self, filename):
         if not(hasattr(self, 'analogs')):
             self.find_analogs()
 

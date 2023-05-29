@@ -37,10 +37,10 @@ def plot_season_ts(p):
         else:
             ya = p.analogs.loc[:,p.variable]
 
-    ax.plot(y.index, y.values, 'steelblue', lw=2, label='{}'.format(p.variable))
-    ax.plot(yd.index, yd.values, color='k', lw=2, label='{} (detrended)'.format(p.variable))
-    ax.plot(ya.index, ya.values, 'ro', label='analog years')
-    ax.vlines(ya.index, vmin, vmax, lw=5, alpha=0.3, label="")
+    ax.plot(np.array(y.index), y.values, 'steelblue', lw=2, label=f'{p.variable}')
+    ax.plot(np.array(yd.index), yd.values, color='k', lw=2, label=f'{p.variable} (detrended)')
+    ax.plot(np.array(ya.index), ya.values, 'ro', label='analog years')
+    ax.vlines(np.array(ya.index), vmin, vmax, lw=5, alpha=0.3, label="")
 
     ax.set_xlim(y.index[0] - relativedelta(years=1), y.index[-1] + relativedelta(years=1))
 
@@ -60,8 +60,7 @@ def plot_season_ts(p):
 
     lyears = ",".join(map(str, p.analogs.index.year.tolist()))
 
-    ax.set_title("Analog seasons for {} {} from {} {}:\n{}".format(p.season, p.sitename, p.dataset,
-                                                                p.variable, lyears, fontsize=14))
+    ax.set_title(f"Analog seasons for {p.season} {p.sitename} from {p.dataset} {p.variable}:\n{lyears}", fontsize=14)
 
     [l.set_fontsize(14) for l in ax.xaxis.get_ticklabels()]
     [l.set_fontsize(14) for l in ax.yaxis.get_ticklabels()]

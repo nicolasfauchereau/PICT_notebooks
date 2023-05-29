@@ -12,4 +12,5 @@ setup(name='paleopy',
       author_email='Nicolas.Fauchereau@gmail.com',
       license='MIT',
       packages=find_packages(exclude=["tests", "docs"]),
+      version=paleopy.__version__,
       zip_safe=False)

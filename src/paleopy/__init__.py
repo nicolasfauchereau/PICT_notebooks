@@ -19,3 +19,7 @@ from . import plotting
 from . import utils
 # same thing for the `markov` functions
 from . import markov
+
+__author__ = 'Nicolas Fauchereau'
+__email__ = "Nicolas.Fauchereau@gmail.com"
+__version__ = "0.1.0"
