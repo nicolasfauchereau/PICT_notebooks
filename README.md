@@ -6,10 +6,8 @@ a dedicated conda environment
 1) clone the repository with git, or download the zip file (green `clone or download` button on the upper right of this repository), if downloading the ZIP file rename the folder created from `PICT_notebooks-master` to `PICT_notebooks`.
 2) install the Anaconda python distribution from [https://www.anaconda.com/distribution/](https://www.anaconda.com/distribution/), choose the **Python 3.7** version, not the Python 2.7 version. 
 3) in the `PICT_notebooks` directory, run at the command line (on a Mac, go to `Applications / Utilities / Terminal`):
-	+ `conda env create -f MAC_PICT_environment.yml` on a Mac
-	or
-	+ `conda env create -f LINUX_PICT_environment.yml` on Linux
-4) activate the `PICT_notebooks` environment by runnning `conda activate PICT_notebooks` at the command line, then run `jupyter notebook` or `jupyter lab`
+	+ `conda env create -f PICT.yml` on a Mac
+4) activate the `PICT_notebooks` environment by runnning `conda activate PICT` at the command line, then run `jupyter notebook` or `jupyter lab` (preferred)
 5) navigate to the `notebooks` directory
 
 ### Notes (PICT refactoring, September 2022):
@@ -30,12 +28,10 @@ a dedicated conda environment
 
 - [x] Berkeley Earth Temperatures (http://berkeleyearth.lbl.gov/auto/Global/Gridded/Land_and_Ocean_LatLong1.nc) 
 
-- [ ]  
-
 - [x] VCSN, all daily variables (except wind)
 
-  - Rain_bc instead of Rain 
-  - Tmean (Norton) instead of regular Tmean 
+  - [x] Rain_bc instead of Rain 
+  - [x] Tmean (Norton) instead of regular Tmean 
 
 - [ ] AWAP (http://www.bom.gov.au/metadata/catalogue/19115/ANZCW0503900567) 
 
@@ -67,7 +63,7 @@ sourced from https://psl.noaa.gov/thredds/catalog/Datasets/catalog.html
 
   - [x] Mean Temperature (Tmean): https://psl.noaa.gov/thredds/dodsC/Datasets/ncep.reanalysis.derived/surface/air.mon.mean.nc.html 
   
-  - [ ] Precipitable water: https://psl.noaa.gov/thredds/dodsC/Datasets/ncep.reanalysis.derived/surface/pr_wtr.eatm.mon.mean.nc.html
+  - [x] Precipitable water: https://psl.noaa.gov/thredds/dodsC/Datasets/ncep.reanalysis.derived/surface/pr_wtr.eatm.mon.mean.nc.html
   
 #### Climate Indices
 
