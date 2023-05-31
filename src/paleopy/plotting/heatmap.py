@@ -78,4 +78,4 @@ def heatmap(wr):
 
     ax.set_title("{} Weather Regimes".format(classification), fontsize=14)
 
-    return fig
+    return fig, ax

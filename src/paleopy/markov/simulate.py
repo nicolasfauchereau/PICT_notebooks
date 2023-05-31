@@ -25,7 +25,7 @@ def simulate(mu,p,N,states):
         """
         import numpy as np
         u = np.random.random_sample()
-        i = 0.
+        i = 0
         s = mu[0]
 
         while ( (u > s) & (i < len(mu))  ):

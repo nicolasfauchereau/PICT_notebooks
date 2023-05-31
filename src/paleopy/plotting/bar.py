@@ -83,8 +83,7 @@ def bar(wr, sig):
         [l.set_fontsize(14) for l in ax2.yaxis.get_ticklabels()]
         [l.set_rotation(90) for l in ax2.xaxis.get_ticklabels()]
 
-        ax2.set_title("{} Weather Regimes".format(wr.classification), fontsize=14)
-
+        ax2.set_title(f"Circulation Regimes\n{wr.classification}", fontsize=14)
 
     # if the object passed is NOT an ensemble, but a proxy object
     else:
@@ -116,7 +115,7 @@ def bar(wr, sig):
 
         [l.set_fontsize(13) for l in ax1.yaxis.get_ticklabels()]
 
-        ax1.set_title("{} Weather Regimes".format(wr.classification), fontsize=14)
+        ax1.set_title(f"Circulation Regimes\n{wr.classification}", fontsize=14)
 
         ax1.yaxis.grid(True)
         ax1.set_axisbelow(True)
@@ -153,7 +152,7 @@ def bar(wr, sig):
 
         ax2.set_ylabel("change in frequency (%)", fontsize=14)
 
-        ax2.set_xlabel("weather regime", fontsize=14)
+        ax2.set_xlabel("circulation regime", fontsize=14)
 
         [l.set_fontsize(13) for l in ax2.yaxis.get_ticklabels()]
 
@@ -164,4 +163,4 @@ def bar(wr, sig):
 
         [ax2.axvline(l, color='k', linestyle=':', zorder=-1) for l in np.arange(1.5, nregimes)]
 
-    return fig
+    return fig, (ax1, ax2)
