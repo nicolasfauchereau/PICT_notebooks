@@ -4,11 +4,12 @@ a dedicated conda environment
 ## installation instructions:
 
 1) clone the repository with git, or download the zip file (green `clone or download` button on the upper right of this repository), if downloading the ZIP file rename the folder created from `PICT_notebooks-master` to `PICT_notebooks`.
-2) install the Anaconda python distribution from [https://www.anaconda.com/distribution/](https://www.anaconda.com/distribution/), choose the **Python 3.7** version, not the Python 2.7 version. 
+2) install the mamnaforge python distribution from [https://github.com/conda-forge/miniforge#mambaforge](https://github.com/conda-forge/miniforge#mambaforge)
 3) in the `PICT_notebooks` directory, run at the command line (on a Mac, go to `Applications / Utilities / Terminal`):
 	+ `conda env create -f PICT.yml` on a Mac
-4) activate the `PICT_notebooks` environment by runnning `conda activate PICT` at the command line, then run `jupyter notebook` or `jupyter lab` (preferred)
-5) navigate to the `notebooks` directory
+4) activate the `PICT_notebooks` environment by runnning `conda activate PICT` at the command line, then run `jupyter notebook` or `jupyter lab` (the ;latter preferred)
+5) navigate to `src` and type `python -m pip install -e .` to install the *paleopy* library
+6) navigate to the `notebooks` directory
 
 ### Notes (PICT refactoring, September 2022):
 
@@ -18,8 +19,8 @@ a dedicated conda environment
 
 - [x] K2K (Kidson 2000)
 - [x] Southwest Pacific Regimes (Lorrey and Fauchereau, 2017)
-- [/] 9 AP NZ circulation regimes (Rampal, Lorrey and Fauchereau, 2022) 
-- [ ] Ross Sea Types (see CPP/indices/notebooks/Ross_Sea_WRs/notebooks)
+- [x] 9 AP NZ circulation regimes (Rampal, Lorrey and Fauchereau, 2022) 
+- [/] Ross Sea Types (see CPP/indices/notebooks/Ross_Sea_WRs/notebooks)
 
 
 #### datasets and variables for composites 
@@ -33,15 +34,15 @@ a dedicated conda environment
   - [x] Rain_bc instead of Rain 
   - [x] Tmean (Norton) instead of regular Tmean 
 
-- [ ] AWAP (http://www.bom.gov.au/metadata/catalogue/19115/ANZCW0503900567) 
+- [x] AWAP (http://www.bom.gov.au/metadata/catalogue/19115/ANZCW0503900567) 
 
-Note: not available yet, update in progress, but the *Australian Gridded Climate Data (AGCD) v1/ Australian Water Availability Project (AWAP)* dataset is available to 2020 at https://dapds00.nci.org.au/thredds/catalog/zv2/agcd/v1/catalog.html. It includes *tmin*, *tmax* and *precip*. 
+Note: not available yet, update in progress, but the *Australian Gridded Climate Data (AGCD) v1/ Australian Water Availability Project (AWAP)* dataset is available to 2019 at https://dapds00.nci.org.au/thredds/catalog/zv2/agcd/v1/catalog.html. It includes *tmin*, *tmax* and *precip*. 
 
 - [x] GPCP precipitation
 
 sourced from https://psl.noaa.gov/thredds/dodsC/Datasets/gpcp/precip.mon.mean.nc.html 
 
-- [ ] Monthly NCEP:
+- [x] Monthly NCEP:
 
 sourced from https://psl.noaa.gov/thredds/catalog/Datasets/catalog.html 
 
@@ -79,7 +80,7 @@ sourced from https://psl.noaa.gov/thredds/catalog/Datasets/catalog.html
 
 - [x] Analog Selection, equal and inverse distance weighting
 - [ ] Heatmaps for all CRs / synoptic types
-- [ ] Histogram outputs for all CRs / synoptic types
+- [x] Histogram outputs for all CRs / synoptic types
 - [x] Ensemble Generation 
 - [x] Climatology Periods
 - [x] Detrended vs un-detrended
@@ -88,8 +89,3 @@ sourced from https://psl.noaa.gov/thredds/catalog/Datasets/catalog.html
 #### A maybe 
 
 - widgets ?
-
-
-
-
-
