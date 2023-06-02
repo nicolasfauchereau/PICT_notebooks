@@ -1,11 +1,11 @@
 repository for the new paleopy library and the associated notebooks, allowing to run 'PICT' (Past Interpretation of Climate Tool") standalone in
-a dedicated conda environment
+a dedicated conda / mamba environment
 
 ## installation instructions:
 
 Note: You need to use the a terminal emulator, on a Mac, go to `Applications / Utilities / Terminal`. 
 
-1) clone the repository with git, or download the zip file (green `clone or download` button on the upper right of this repository), if downloading the ZIP file rename the folder created from `PICT_notebooks-master` to `PICT_notebooks`.  
+1) clone the repository with git, or download the zip file (green `clone or download` button on the upper right of this repository), if downloading the ZIP file rename the folder created upon extration from `PICT_notebooks-master` to `PICT_notebooks`, and copy it from the 'Downloads' folder to your home directory. 
    
 2) install the mambaforge python distribution from [https://github.com/conda-forge/miniforge#mambaforge](https://github.com/conda-forge/miniforge#mambaforge)  
    
@@ -18,13 +18,15 @@ Note: You need to use the a terminal emulator, on a Mac, go to `Applications / U
    
 5) navigate to the `src` folder and type `python -m pip install -e .` to install the *paleopy* library  
 
-6) navigate to the `notebooks` directory
+6) make sure you have the `datasets` folder copied in `PICT_notebooks` 
 
-7) launch `Jupyter Lab` at the command line
+7) navigate to the `notebooks` directory
+
+8) launch `Jupyter Lab` at the command line
  
-8) In Jupyter Lab, go to the `make_datasets` directory, and open `make_datasets_json.ipynb` 
-9) 
-
+9) In Jupyter Lab, go to the `make_datasets` directory, and open `make_datasets_json.ipynb` 
+  
+10)  change the `root` variable to the path where the `datasets` folder resides, then run the whole notebook, this will update the JSON files with the paths to the datasets 
 
 
 ### Notes (PICT refactoring, September 2022):
@@ -36,7 +38,7 @@ Note: You need to use the a terminal emulator, on a Mac, go to `Applications / U
 - [x] K2K (Kidson 2000)
 - [x] Southwest Pacific Regimes (Lorrey and Fauchereau, 2017)
 - [x] 9 AP NZ circulation regimes (Rampal, Lorrey and Fauchereau, 2022) 
-- [/] Ross Sea Types (see CPP/indices/notebooks/Ross_Sea_WRs/notebooks)
+- [/] Ross Sea Types (see CPP/indices/notebooks/Ross_Sea_WRs/notebooks) --> still unresolved issue with the MCMC time-series 
 
 
 #### datasets and variables for composites 
@@ -45,14 +47,14 @@ Note: You need to use the a terminal emulator, on a Mac, go to `Applications / U
 
 - [x] Berkeley Earth Temperatures (http://berkeleyearth.lbl.gov/auto/Global/Gridded/Land_and_Ocean_LatLong1.nc) 
 
-- [x] VCSN, all daily variables (except wind)
+- [x] VCSN
 
   - [x] Rain_bc instead of Rain 
   - [x] Tmean (Norton) instead of regular Tmean 
 
 - [x] AWAP (http://www.bom.gov.au/metadata/catalogue/19115/ANZCW0503900567) 
 
-Note: not available yet, update in progress, but the *Australian Gridded Climate Data (AGCD) v1/ Australian Water Availability Project (AWAP)* dataset is available to 2019 at https://dapds00.nci.org.au/thredds/catalog/zv2/agcd/v1/catalog.html. It includes *tmin*, *tmax* and *precip*. 
+Note: not available yet, update in progress, but the *Australian Gridded Climate Data (AGCD) v1/ Australian Water Availability Project (AWAP)* dataset is available to 2019 at https://dapds00.nci.org.au/thredds/catalog/zv2/agcd/v1/catalog.html. It includes *tmin*, *tmax* and *precip*. So AWAP is still available, but only to 2014, while the AGCD dataset is available to 2019. 
 
 - [x] GPCP precipitation
 
@@ -95,12 +97,12 @@ sourced from https://psl.noaa.gov/thredds/catalog/Datasets/catalog.html
 #### Features
 
 - [x] Analog Selection, equal and inverse distance weighting
-- [ ] Heatmaps for all CRs / synoptic types
-- [x] Histogram outputs for all CRs / synoptic types
+- [x] Heatmaps for all CRs / synoptic types
+- [x] Histogram outputs for all CRs / synoptic types --> bug in the plotting, should be easy to fix
 - [x] Ensemble Generation 
 - [x] Climatology Periods
 - [x] Detrended vs un-detrended
-- [ ] version control and tracking of the proxy files
+- [/] version control and tracking of the proxy files: Can only be managed using git / github 
 
 #### A maybe 
 
