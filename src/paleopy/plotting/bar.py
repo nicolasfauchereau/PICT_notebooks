@@ -25,7 +25,7 @@ def bar(wr, sig):
         if wr.df_anoms.shape[1] < 3:
             print("""
             not enough proxies in the ensemble, size was {}
-            need at list 5
+            need at least 5
             """.format(wr.df_anoms.shape[1]))
             raise Exception("size error")
 
@@ -73,7 +73,7 @@ def bar(wr, sig):
             elif wrone.df_anoms.iloc[i,:].values < 0 and not testb[i]:
                plt.setp(b,facecolor='steelblue', edgecolor='k', alpha=0.5)
 
-            plt.plot(i+1,wrone.df_anoms.iloc[i,:]*100, 'ko', zorder=11)
+            plt.plot(i+1,wrone.df_anoms.iloc[i,:].values[0]*100, 'ko', zorder=11)
 
         plt.setp(bp['fliers'], color='gray', marker='+',visible=True)
 
