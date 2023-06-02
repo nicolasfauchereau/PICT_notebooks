@@ -3,13 +3,29 @@ a dedicated conda environment
 
 ## installation instructions:
 
-1) clone the repository with git, or download the zip file (green `clone or download` button on the upper right of this repository), if downloading the ZIP file rename the folder created from `PICT_notebooks-master` to `PICT_notebooks`.
-2) install the mamnaforge python distribution from [https://github.com/conda-forge/miniforge#mambaforge](https://github.com/conda-forge/miniforge#mambaforge)
-3) in the `PICT_notebooks` directory, run at the command line (on a Mac, go to `Applications / Utilities / Terminal`):
-	+ `conda env create -f PICT.yml` on a Mac
-4) activate the `PICT_notebooks` environment by runnning `conda activate PICT` at the command line, then run `jupyter notebook` or `jupyter lab` (the ;latter preferred)
-5) navigate to `src` and type `python -m pip install -e .` to install the *paleopy* library
+Note: You need to use the a terminal emulator, on a Mac, go to `Applications / Utilities / Terminal`. 
+
+1) clone the repository with git, or download the zip file (green `clone or download` button on the upper right of this repository), if downloading the ZIP file rename the folder created from `PICT_notebooks-master` to `PICT_notebooks`.  
+   
+2) install the mambaforge python distribution from [https://github.com/conda-forge/miniforge#mambaforge](https://github.com/conda-forge/miniforge#mambaforge)  
+   
+3) in the `PICT_notebooks` directory (use the `cd PICT_notebooks` command in the Terminal), run at the command line:
+	+ `mamba env create -f Mac_PICT.yml` on a Mac
+  or
+	+ `mamba env create -f Linux_PICT.yml` on Linux
+  
+4) activate the `PICT_notebooks` environment by runnning `conda activate PICT` at the command line.  
+   
+5) navigate to the `src` folder and type `python -m pip install -e .` to install the *paleopy* library  
+
 6) navigate to the `notebooks` directory
+
+7) launch `Jupyter Lab` at the command line
+ 
+8) In Jupyter Lab, go to the `make_datasets` directory, and open `make_datasets_json.ipynb` 
+9) 
+
+
 
 ### Notes (PICT refactoring, September 2022):
 
