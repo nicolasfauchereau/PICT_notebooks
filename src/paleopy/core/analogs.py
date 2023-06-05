@@ -225,7 +225,13 @@ class analogs:
 
         # eliminate the variables not needed
 
-        self.dset = self.dset[[self.variable, 'seas_var', 'composite_sample', 'composite_anomalies', 'pvalues']]
+        if 'mask' in self.dset.data_vars:
+
+            self.dset = self.dset[[self.variable, 'seas_var', 'composite_sample', 'composite_anomalies', 'pvalues', 'mask']]
+        
+        else: 
+
+            self.dset = self.dset[[self.variable, 'seas_var', 'composite_sample', 'composite_anomalies', 'pvalues']]
 
         # set the attributes
         self.dset['latitudes'].attrs['units'] = 'degrees_north'
@@ -242,9 +248,12 @@ class analogs:
         return self
 
     def save_to_file(self, fname=None):
-        nc = self.dset[['composite_sample','composite_anomalies', 'pvalues']]
-        nc = nc.to_netcdf(fname)
-        self.dset.close()
+        if 'mask' in self.dset.data_vars:
+            nc = self.dset[['composite_sample','composite_anomalies', 'pvalues', 'mask']]
+        else: 
+            nc = self.dset[['composite_sample','composite_anomalies', 'pvalues']]
+        nc.to_netcdf(fname)
+        nc.close()
 
     def close(self):
         self.dset.close()

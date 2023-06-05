@@ -150,7 +150,7 @@ class scalar_plot:
 
         return data_array
 
-    def plot(self, subplots=False, domain=None, wrap_longitudes=False, res='low'):
+    def plot(self, subplots=False, domain=None, wrap_longitudes=False, res='low', mask=False):
         """
         cartopy plot of a scalar quantity
         """
@@ -164,6 +164,11 @@ class scalar_plot:
         mat = self.dset_domain['composite_anomalies']
         pvalues = self.dset_domain['pvalues']
 
+        if mask and ('mask' in self.dset_domain.data_vars): 
+            mask_array = self.dset_domain['mask']
+        else: 
+            mask_array = None
+
         # get the plot params from the composite anomalies data
         self._get_plots_params(mat.data)
 
@@ -174,6 +179,8 @@ class scalar_plot:
         if wrap_longitudes:
             mat = self._wrap_longitudes(mat)
             pvalues = self._wrap_longitudes(pvalues)
+            if mask_array is not None: 
+                mask_array = self._wrap_longitudes(mask_array)
 
         r, c = mat.shape
 
@@ -182,18 +189,31 @@ class scalar_plot:
         if self.proj == 'spstere':
             mat = mat.sel(latitudes=slice(-90, 0))
             pvalues = pvalues.sel(latitudes=slice(-90, 0))
+            if mask_array is not None: 
+                mask_array = mask_array.sel(latitudes=slice(-90, 0))
         elif self.proj == 'npstere':
             mat = mat.sel(latitudes=slice(0, 90))
             pvalues = pvalues.sel(latitudes=slice(0, 90))
+            if mask_array is not None: 
+                mask_array = mask_array.sel(latitudes=slice(0, 90))
 
-        mat.plot.contourf(ax=ax, levels=20, cmap=cmap, transform=ccrs.PlateCarree(), \
+        if mask_array is not None: 
+
+            (mat * mask_array).plot.contourf(ax=ax, levels=20, cmap=cmap, transform=ccrs.PlateCarree(), \
+            cbar_kwargs={'shrink':0.7, 'label':units})
+
+        else: 
+        
+            mat.plot.contourf(ax=ax, levels=20, cmap=cmap, transform=ccrs.PlateCarree(), \
             cbar_kwargs={'shrink':0.7, 'label':units})
 
         # if test is defined, one contours the p-values for that level
         if self.test:
             pvalues_mask = pvalues.where(pvalues <= self.test)
-            pvalues_mask.plot.contourf(transform=ccrs.PlateCarree(), levels=2, colors="None", hatches=["..."], add_colorbar=False)
-            # pvalues.plot.contour(levels = [self.test], colors='#8C001A', linewidths=1.5, transform=ccrs.PlateCarree())
+            if mask_array is not None: 
+                (pvalues_mask * mask_array).plot.contourf(transform=ccrs.PlateCarree(), levels=2, colors="None", hatches=["..."], add_colorbar=False)
+            else: 
+                pvalues_mask.plot.contourf(transform=ccrs.PlateCarree(), levels=2, colors="None", hatches=["..."], add_colorbar=False)
 
         # draw the coastlines, if the domain is global we use the 50 minutes resolution coastlines
         # dataset, and if not (res = 'high') we use the 10 minutes resolution (slower)
