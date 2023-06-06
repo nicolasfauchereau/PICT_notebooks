@@ -14,8 +14,8 @@ def plot_season_ts(p):
     if p.calc_anoms:
 
         y = p.ts_seas.loc[:,'anomalies']
-        vmin = y.min() -0.1 * (np.abs(y.min()))
-        vmax = y.max() +0.1 * (np.abs(y.min()))
+        vmin = y.min() -0.2 * (np.abs(y.min()))
+        vmax = y.max() +0.2 * (np.abs(y.min()))
 
         yd = p.ts_seas.loc[:,'d_anomalies']
 
@@ -27,8 +27,8 @@ def plot_season_ts(p):
     else:
 
         y = p.ts_seas.loc[:,p.variable]
-        vmin = y.min() -0.01 * (np.abs(y.min()))
-        vmax = y.max() +0.01 * (np.abs(y.min()))
+        vmin = y.min() -0.02 * (np.abs(y.min()))
+        vmax = y.max() +0.02 * (np.abs(y.min()))
 
         yd = p.ts_seas.loc[:,'d_' + p.variable]
 
