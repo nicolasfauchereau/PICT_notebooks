@@ -1,0 +1,6 @@
+- **proxy.ipynb**: Create a proxy, select datasets to composite, and map the corresponding composite anomalies  
+- **make_proxies_from_csv.ipynb**: take a csv file containing required information for series of proxies, and creates an ensemble (i.e. a series of JSON files) in a directory  
+- **ensemble.ipynb**: Initialise an ensemble object from a directory containing a series of proxies JSON files, select datasets to composite, and map the corresponding composite anomalies  
+- **WR_proxy.ipynb**: Illustrate the barplots showing the climatological frequencies + change in frequency for the analog years associated with a single proxy  
+- **WR_ensemble.ipynb**: Illustrate the barplots and heatmaps showing the changes in frequency for the analog years associated with an ensemble of proxies  
+- **indices.ipynb**: Illustrate the plots showing the climate indices anomalies associated with one proxy as well as with an ensemble of proxies  
