@@ -1,0 +1,26 @@
+,Site,Lat,Long,Anom,dataset,variable
+0,Rarotonga,-21.23,-159.82,0.6,ersst,sst
+1,Amedee,-22.48,166.47,-0.26,ersst,sst
+2,Oroko,-43.222615,170.307329,-0.42,ncep,Tmean
+3,Greenlaw,-43.006108,171.419497,-0.26,ncep,Tmean
+4,Crow,-43.346222,170.998122,-0.62,ncep,Tmean
+5,Cameron,-42.934067,171.505139,-0.81,ncep,Tmean
+6,Avoca,-43.043031,171.405812,-0.53,ncep,Tmean
+7,Temple,-44.146466,169.709872,-0.79,ncep,Tmean
+8,Hopkins,-43.942569,169.887499,-0.39,ncep,Tmean
+9,Turnbull,-43.877607,169.850303,-0.4,ncep,Tmean
+10,Jollie,-43.697778,170.33,-0.99,ncep,Tmean
+11,Cass,-43.652675,170.315493,-0.16,ncep,Tmean
+12,Caples,-44.801851,168.182845,-0.35,ncep,Tmean
+13,Fraser,-44.786354,168.186884,-0.21,ncep,Tmean
+14,Frances,-44.596521,168.395713,-0.41,ncep,Tmean
+15,Hunter,-44.094444,169.646667,-0.88,ncep,Tmean
+16,Hunter,-44.120833,169.636111,-0.14,ncep,Tmean
+17,Mistake,-44.843612,168.015261,-1.14,ncep,Tmean
+18,Pyke,-44.803611,168.178333,-0.1,ncep,Tmean
+19,Falls Creek,-44.824221,168.015937,-0.71,ncep,Tmean
+20,Pear Drop,-44.251904,168.849048,-0.69,ncep,Tmean
+21,Clarke,-43.873611,169.451667,-0.13,ncep,Tmean
+22,Browning Creek,-43.850548,169.836463,-0.62,ncep,Tmean
+23,Gunn,-43.368294,170.327343,-0.59,ncep,Tmean
+24,Taramakau,-42.899444,171.486667,-0.69,ncep,Tmean
