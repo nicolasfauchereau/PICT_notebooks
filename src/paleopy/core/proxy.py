@@ -89,7 +89,7 @@ class proxy:
 
     period : string
             The period from which the analogs can be taken in a
-            given dataset. Default is "1972-2019"
+            given dataset. Default is "1979-2019"
             user-defined
 
     climatology : string
@@ -149,7 +149,7 @@ class proxy:
     aspect=None, elevation=None, dating_convention=None, calendar=None, \
     chronology=None, measurement=None, djsons='../jsons', pjsons='../jsons/proxies', \
     pfname=None, dataset='ersst', variable='sst', season='DJF', value=None, \
-    qualitative=0, period="1972-2019", climatology="1981-2010", \
+    qualitative=0, period="1979-2019", climatology="1981-2010", \
     calc_anoms=1, detrend=1, method='quintiles'):
 
         super(proxy, self).__init__()
