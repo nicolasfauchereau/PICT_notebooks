@@ -16,9 +16,9 @@ def make_proxy_from_json(jsonfile, djsons=None):
             assert isinstance(in_dict, dict)
             for key, val in in_dict.items():
                 if isinstance(val, (list, tuple)):
-                   setattr(self, key, [DictObj(x) if isinstance(x, dict) else x for x in val])
+                   setattr(self, key, [obj_from_dict(x) if isinstance(x, dict) else x for x in val])
                 else:
-                   setattr(self, key, DictObj(val) if isinstance(val, dict) else val)
+                   setattr(self, key, obj_from_dict(val) if isinstance(val, dict) else val)
 
     p = obj_from_dict(dict_from_json)
 
