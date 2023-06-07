@@ -1,5 +1,6 @@
 # Python packages imports
 import os
+import pathlib
 from collections import OrderedDict as od
 import numpy as np
 from numpy import ma
@@ -178,7 +179,7 @@ class proxy:
         self.calc_anoms = bool(calc_anoms)
         self.detrend = bool(detrend)
         self.method = method
-
+        
     def read_dset_params(self):
         """
         reads the `datasets.json` file and loads the dictionnary
