@@ -19,6 +19,8 @@ from . import plotting
 from . import utils
 # same thing for the `markov` functions
 from . import markov
+# import the functions to calculat the climate mode indices 
+from . import indices
 
 __author__ = 'Nicolas Fauchereau'
 __email__ = "Nicolas.Fauchereau@gmail.com"
