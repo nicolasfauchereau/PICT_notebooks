@@ -1,5 +1,6 @@
 - **make_one_proxy.ipynb**: This notebook just initialises a proxy and create a proxy JSON file 
-- **proxy.ipynb**: Create a proxy, select datasets to composite, and map the corresponding composite anomalies 
+- **proxy.ipynb**: Create a proxy, select datasets to composite, and map the corresponding composite anomalies
+- **read_one_proxy_from_JSON**: Show how to read a proxy information from a JSON file and pass it to the analogs class to map the corresponding composite anomalies
 - **make_proxies_from_csv.ipynb**: take a csv file containing required information for series of proxies, and creates an ensemble (i.e. a series of JSON files) in a directory  
 - **ensemble.ipynb**: Initialise an ensemble object from a directory containing a series of proxies JSON files, select datasets to composite, and map the corresponding composite anomalies  
 - **WR_proxy.ipynb**: Illustrate the barplots showing the climatological frequencies + change in frequency for the analog years associated with a single proxy  
